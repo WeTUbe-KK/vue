@@ -1,0 +1,11 @@
+{
+  "development": {
+    "username": "root",
+    "password": null,
+    "database": "wetube",
+    "host": "localhost",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  }
+}
+
