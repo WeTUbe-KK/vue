@@ -57,29 +57,35 @@
 
     <!-- ------tempat taruh video------- -->
 
-        <div class="menu" style="display: flex;">
-            <div class="profile" style="background-color: black; width: 30%; height: 100vh;">                
-                <div class="listPhoto" style="margin: 0 auto; width: 90%; height: 25%; border-radius: 2%; background-color: white; margin-top: 5%;"></div>
-                <div class="wrap" style="margin: 10% 0;">
-                    <h4 class="text-light">Playlist name</h4>
-                    <div class="flex" style="justify-content: center; align-items: center; color: white; opacity: 0.6;">
+        <div class="menu">
+            <div class="profile">                
+                <div class="listPhoto"></div>
+                <div class="wrap" >
+                    <h4 class="text-light text-center">Playlist name</h4>
+                    <div class="info">
                         <p>Total Playlist Video</p>
                         <div style="width: 2px; height: 25px; background-color: white; margin: 0 2% 4%;"></div>
                         <p>Last updated</p>
                     </div>                    
                 </div>
                 <hr style="width:80%; background-color: yellow; height: 3px; margin: 0 auto;"> 
-                <div class="flex" style="align-items: center; margin: 5% 10%;">
+                <div class="info2">
                     <div class="userphoto" style="width: 65px; height: 65px; border-radius: 50%; background-color: white;"></div>
                     <h5 style="margin: 0 7%; color: white;">Username</h5>
                 </div>
             </div>
-            <div style="background-color: black; width: 70%; padding: 3%; opacity: 0.9;">
+            <div class="lists">
                 <div class="videos" style="display: flex; align-items: center;">
                     <h4 style="margin: 0 1.5%;">1</h4>
-                    <div class="video" style="width: 25%; height: 140px; background-color: white;"></div>
+                    <div class="video"></div>
                     <h5 style="margin: 0 1.5%;">Video Title</h5>
-                </div>           
+                </div>     
+                <br>   
+                <div class="videos" style="display: flex; align-items: center;">
+                    <h4 style="margin: 0 1.5%;">2</h4>
+                    <div class="video"></div>
+                    <h5 style="margin: 0 1.5%;">Video Title</h5>
+                </div>     
             </div>
         </div>
     </div>
