@@ -11,6 +11,9 @@ import Library from './components/library.vue'
 import History from './components/history.vue'
 import Your_video from './components/your_video.vue'
 import Watch_later from './components/watch_later.vue'
+import playlist from './components/playlist.vue'
+import signIn from './components/signIn.vue'
+import signUp from './components/signUp.vue'
 
 Vue.use(VueRouter)
 
@@ -56,6 +59,21 @@ const routes = [
     name: 'watch_later',
     path: '/watchlater',
     component: Watch_later
+  },
+  {
+    name: 'playlist',
+    path: '/playlist',
+    component: playlist
+  },
+  {
+    name: 'signIn',
+    path: '/signin',
+    component: signIn
+  },
+  {
+    name: 'signUp',
+    path: '/signup',
+    component: signUp
   },
 ];
 

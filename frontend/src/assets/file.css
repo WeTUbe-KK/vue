@@ -94,6 +94,10 @@ nav{
     padding-bottom: 7px;
 }
 
+.shortcut a p{
+    margin-bottom: 0;
+}
+
 .sidebar hr{
     border : 0;
     height : 1px;
@@ -404,6 +408,17 @@ nav{
         margin-left: 0;
         margin-right: 15px;
         margin-top: 15px;
+    }
+}
+
+.menu{
+    margin-left: 15%;
+}
+
+
+@media (max-width: 900px) {
+    .menu{
+        margin-left: 0%;
     }
 }
 
