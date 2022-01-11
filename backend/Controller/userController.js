@@ -9,17 +9,12 @@ exports.register = (req, res) => {
     res.status(400).json({ error: "Username tidak boleh kosong" });
   } else if (req.body.password == "") {
     res.status(400).json({ error: "Password tidak boleh kosong" });
-  } else if (req.body.confirm_password == "") {
-    res.status(400).json({ error: "Confirm Password tidak boleh kosong" });
   } else if (req.body.email == "") {
     res.status(400).json({ error: "Email tidak boleh kosong" });
   } else if (req.body.gender == "") {
     res.status(400).json({ error: "Gender tidak boleh kosong" });
   } else if (req.body.birthday == "") {
     res.status(400).json({ error: "Birthday tidak boleh kosong" });
-  }
-  if (req.body.confirm_password !== req.body.password) {
-    res.status(400).json({ error: "Konfirmasi Password tidak sama" })
   }
   const userData = {
     username: req.body.username,

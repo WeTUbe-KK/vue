@@ -1,6 +1,6 @@
 const likeComment = require("../Model/likeComment");
 const { isAuth } = require("../Util/isAuth");
-const commentController = require("./commentController");
+const Comment = require("../Model/comment");
 
 exports.like = (req, res) => {
   const { user_id } = isAuth((context = { req }));
@@ -23,7 +23,7 @@ exports.like = (req, res) => {
           }
         );
       }
-      const comment = await commentController.findOne(req.params.id);
+      const comment = await Comment.findOne({ where: { id: req.params.id } });
       res.status(200).json(comment);
     })
     .catch((err) => {
@@ -52,7 +52,7 @@ exports.dislike = (req, res) => {
           }
         );
       }
-      const comment = await commentController.findOne(req.params.id);
+      const comment = await Comment.findOne({ where: { id: req.params.id } });
       res.status(200).json(comment);
     })
     .catch((err) => {

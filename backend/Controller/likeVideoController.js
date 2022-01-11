@@ -22,7 +22,7 @@ exports.like = (req, res) => {
           }
         );
       }
-      const video = await videoController.findOne(req.params.id);
+      const video = await videoController.findOne({ where: { id: req.params.id } });
       res.status(200).json(video);
     })
     .catch((err) => {
@@ -50,7 +50,7 @@ exports.dislike = (req, res) => {
           }
         );
       }
-      const video = await videoController.findOne(req.params.id);
+      const video = await videoController.findOne({ where: { id: req.params.id } });
       res.status(200).json(video);
     })
     .catch((err) => {
