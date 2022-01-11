@@ -51,7 +51,7 @@ Video.hasOne(likeComment, { as: "likeComment", foreignKey: "video_id" });
 likeComment.belongsTo(Video, { as: "Video", foreignKey: "video_id" });
 
 // Like Video
-Video.hasOne(likeVideo, { as: "likeVideo", foreignKey: "video_id" });
+Video.hasMany(likeVideo, { as: "likeVideo", foreignKey: "video_id" });
 likeVideo.belongsTo(Video, { as: "Video", foreignKey: "video_id" });
 
 module.exports = Video;
