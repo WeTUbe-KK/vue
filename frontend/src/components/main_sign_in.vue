@@ -4,19 +4,23 @@
         <div id="form_input_video">
             <img src="../assets/photo/white_mode/close_icon.png" v-on:click="off()">
             <h3>Upload Video</h3>
-            <div class="drag-area">
-                <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                <header>Drag & Drop to Upload File</header>
-                <span>OR</span>
-                <button>Browse File</button>
-                <input type="file" hidden>
-            </div>
-            <h3>Title (required)</h3>
-            <textarea id="w3review" name="w3review" rows="2" cols="80"></textarea>
-            <h3>Description</h3>
-            <textarea id="w3review" name="w3review" rows="5" cols="80"></textarea>
-            <h3>thumbnail</h3>
-            <input type="file" id="myFile" name="filename">
+            <form method="post" @submit.prevent="upload" enctype="multipart/form-data">
+              <div class="drag-area">
+                  <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                  <header>Drag & Drop to Upload File</header>
+                  <span>OR</span>
+                  <input type="file" @change="uploadFile" ref="file">
+              </div>
+              <h3>Title (required)</h3>
+              <textarea id="w3review" name="w3review" rows="2" cols="80" v-model="title"></textarea>
+              <h3>Description</h3>
+              <textarea id="w3review" name="w3review" rows="5" cols="80" v-model="description"></textarea>
+              <!-- <h3>thumbnail</h3>
+              <input type="file" id="myFile" name="filename"> -->
+              <div>
+                <button type="submit" class="btn btn-sm btn-light">Upload</button>
+              </div>
+            </form>
         </div>
     </div>
 
@@ -31,12 +35,16 @@
                 <img src="../assets/photo/dark_mode/search_icon.png" alt="search_icon"> 
             </div>
         </div>
-        <div class="navbar_right flex"></div>
+        <div class="navbar_right flex">
+          <div class="btn btn-outline-danger" v-on:click="signout()">
+                <p class="m-0">Sign Out</p>
+          </div>
+        </div>
     </nav>
 
     <div class="sidebar">
         <div class="shortcut">
-            <a href="#"><img src="../assets/photo/dark_mode/home_icon.png" alt="home"><p>Home</p></a>
+            <a href="/home"><img src="../assets/photo/dark_mode/home_icon.png" alt="home"><p>Home</p></a>
             <router-link :to="{ name: ['explore'] }"><img src="../assets/photo/white_mode/explore_icon.png" alt="Explore"><p>Explore</p></router-link>
             <router-link :to="{ name: ['subscription'] }"><img src="../assets/photo/white_mode/subscription_icon.png" alt="Subscription"><p>Subscription</p></router-link>
             <hr>
@@ -85,6 +93,10 @@ export default {
   data() {
     return {
       video: [],
+      title: "",
+      description: "",
+      Video: "",
+      formData: ""
     };
   },
   created() {
@@ -98,13 +110,41 @@ export default {
   },
   */
   methods: {
-  async  getVideo() {
+  uploadFile() {
+    this.Video = this.$refs.file.files[0];
+    this.formData = new FormData();
+    this.formData.append('video', this.Video);
+  },
+  async upload() {
+     try {
+       this.formData.append("name",this.title)
+       this.formData.append("description",this.description)
+        const res = await axios.post(`${process.env.VUE_APP_BACKEND}/video/upload`,this.formData,{
+            headers: {
+              "Authorization" : `Bearer ${localStorage.getItem('user-token')}`,
+              "Content-Type" : "multipart/form-data"
+            }
+          }
+        );
+        this.title = "";
+        this.description = ""
+        console.log(res)
+        this.$router.push("/home")
+      } catch (err) {
+        console.log(err);
+      }
+  },
+  async getVideo() {
       try {
         const response = await axios.put(`http://localhost:3000/video`)
         this.video = response.data.response;
       } catch (err){
         console.log(err);
       }
+    },
+    signout(){
+      localStorage.removeItem('user-token')
+      this.$router.push("/")
     },
     on(){
         document.getElementById("overlay").style.display = "block"

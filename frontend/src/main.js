@@ -17,51 +17,87 @@ Vue.use(VueRouter)
 
 Vue.config.productionTip = false
 
+const ifAuthenticated = (to, from, next) => {
+  if (localStorage.getItem("user-token")) {
+    next();
+    return;
+  }
+  router.push({
+    name: 'Index',
+    params: {
+      returnTo: to.path,
+      query: to.query,
+    },
+  });
+};
+const Authenticated = (to, from, next) => {
+  if (localStorage.getItem("user-token")) {
+    next();
+    router.push({
+      name: 'IndexUser',
+      params: {
+        returnTo: to.path,
+        query: to.query,
+      },
+    });
+    return;
+  }
+};
+
 const routes = [
   {
     name: 'Index',
     path: '/',
-    component: Index
+    component: Index,
+    beforeEnter: Authenticated,
   },
   {
     name: 'IndexUser',
     path: '/home',
-    component: IndexUser
+    component: IndexUser,
+    beforeEnter: ifAuthenticated,
   },
   {
     name: 'explore',
     path: '/explore',
-    component: Explore
+    component: Explore,
+    beforeEnter: ifAuthenticated,
   },
   {
     name: 'subscription',
     path: '/subscription',
-    component: Subscription
+    component: Subscription,
+    beforeEnter: ifAuthenticated,
   },
   {
     name: 'library',
     path: '/library',
-    component: Library
+    component: Library,
+    beforeEnter: ifAuthenticated,
   },
   {
     name: 'history',
     path: '/history',
-    component: History
+    component: History,
+    beforeEnter: ifAuthenticated,
   },
   {
     name: 'your_video',
     path: '/yourvideo',
-    component: Your_video
+    component: Your_video,
+    beforeEnter: ifAuthenticated,
   },
   {
     name: 'watch_later',
     path: '/watchlater',
-    component: Watch_later
+    component: Watch_later,
+    beforeEnter: ifAuthenticated,
   },
   {
     name: 'playlist',
     path: '/playlist',
-    component: playlist
+    component: playlist,
+    beforeEnter: ifAuthenticated,
   },
 ];
 

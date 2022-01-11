@@ -28,6 +28,13 @@ module.exports = {
           key: "id",
         },
       },
+      comment_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "comments",
+          key: "id",
+        },
+      },
       status_like: {
         type: Sequelize.BOOLEAN,
       },

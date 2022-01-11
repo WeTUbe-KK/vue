@@ -36,7 +36,7 @@
 
     <div class="sidebar">
         <div class="shortcut">
-            <a href="#"><img src="../assets/photo/dark_mode/home_icon.png" alt="home"><p>Home</p></a>
+            <a href="/home"><img src="../assets/photo/dark_mode/home_icon.png" alt="home"><p>Home</p></a>
             <router-link :to="{ name: ['explore'] }"><img src="../assets/photo/white_mode/explore_icon.png" alt="Explore"><p>Explore</p></router-link>
             <router-link :to="{ name: ['subscription'] }"><img src="../assets/photo/white_mode/subscription_icon.png" alt="Subscription"><p>Subscription</p></router-link>
             <hr>

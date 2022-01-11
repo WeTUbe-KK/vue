@@ -27,8 +27,8 @@
             <h3>Sign In</h3>
             <form class="login" @submit.prevent="login" method="post">
                 <div class="txt_field">
-                    <input required v-model="email" type="text">
-                    <label>Email</label>
+                    <input required v-model="username" type="text">
+                    <label>Username</label>
                 </div>
         
                 <div class="txt_field">
@@ -36,9 +36,9 @@
                     <label>Password</label>
                 </div>
         
-                <div class="pass">Forget Password ?</div>
+                <!-- <div class="pass">Forget Password ?</div> -->
                 <!-- <button type="submit">Login</button> -->
-                <input @click="login" type="submit" value="login"> 
+                <button type="submit" class="btn btn-sm btn-light">Login</button>
                 <div class="sign_up" v-on:click="onnn()">
                     Create Account
                 </div>
@@ -47,47 +47,50 @@
     </div>
 
 
-    <div id="overlay2">
+    <div id="overlay2" class="mt-5">
         <div id="form_input_video">
         <img src="../assets/photo/white_mode/close_icon.png" v-on:click="off()">
             <h3>Create Account</h3>
-            <form method="post">
-            <div class="txt_field">
-                <input v-model="email_r" type="text" required>
-                <label>Email</label>
+            <form method="post" @submit.prevent="register">
+            <div class="row">
+                <div class="col-md-4 mx-auto txt_field">
+                    <input v-model="email" type="text" required>
+                    <label>Email</label>
+                </div>
+        
+                <div class="col-md-4 me-3 mx-auto txt_field">
+                    <input v-model="username" type="text" required>
+                    <label>Username</label>
+                </div>
             </div>
-    
-            <div class="txt_field">
-                <input v-model="f_name" type="text" required>
-                <label>First Name</label>
+            <div class="row">
+        
+                <div class="col-md-4 me-3 mx-auto txt_field">
+                    <input v-model="password" type="password" required>
+                    <label>Password</label>
+                </div>
+
+                <div class="col-md-4 me-3 mx-auto txt_field">
+                    <input type="password" v-model="confirm_password" required>
+                    <label>Confirm Password</label>
+                </div>
             </div>
-    
-            <div class="txt_field">
-                <input v-model="l_name" type="text" required>
-                <label>Last Name</label>
+            <div class="row">
+        
+                <div class="col-md-4 me-3 mx-auto txt_field">
+                <input v-model="birthday"  type="date" required>
+                <label>Birthday</label>
+                </div>
+        
+                <div class="col-md-4 me-3 mx-auto txt_field">
+                <select v-model="gender" >
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+                <label>Gender</label>
+                </div>
             </div>
-    
-            <div class="txt_field">
-                <input v-model="password_r" type="password" required>
-                <label>Password</label>
-            </div>
-    
-            <div class="txt_field">
-            <input type="password" required>
-            <label>Confirm Password</label>
-            </div>
-    
-            <div class="txt_field">
-            <input v-model="birthday" type="date" required>
-            <label>Birthday</label>
-            </div>
-    
-            <div class="txt_field">
-            <input v-model="gender" type="text" required>
-            <label>Gender</label>
-            </div>
-            
-            <input @click="register" type="submit" value="Create">
+            <button type="submit" class="btn btn-sm btn-light">Register</button>
             </form>
         </div>
     </div>
@@ -104,8 +107,8 @@
             </div>
         </div>
         <div class="navbar_right flex">
-            <div class="button_sign_in" v-on:click="onn()">
-                <p>Sign In</p>
+            <div class="btn btn-outline-primary" v-on:click="onn()">
+                <p class="m-0">Sign In</p>
             </div>
         </div>
     </nav>
@@ -164,11 +167,8 @@ export default {
       video: [],
       email: "",
       password: "",
-
-      email_r: "",
-      f_name: "",
-      l_name: "",
-      password_r: "",
+      username: "",
+      confirm_password: "",
       birthday: "",
       gender: ""
     };
@@ -176,36 +176,41 @@ export default {
   methods: {
     async login() {
       try {
-        await axios.post('http://localhost:3000/login', {
-          email: this.email,
+        const res = await axios.post(`${process.env.VUE_APP_BACKEND}/login`, {
+          username: this.username,
           password: this.password
         });
-        this.email = "";
+        this.username = "";
         this.password = ""
-        this.$router.push("/main_sign_in")
+        const token = res.data.data
+        localStorage.setItem('user-token', token)
+        this.$router.push("/home")
       } catch (err) {
         console.log(err);
       }
     },
     async register() {
-      try {
-        await axios.post(`http://localhost:3000/register`, {
-          email: this.email_r,
-          username: this.f_name + " " + this.l_name,
-          gender: this.gender,
-          password: this.password_r,
-          birthday: this.birthday,
-        });
-        this.email_r = "";
-        this.f_name = "";
-        this.l_name = "";
-        this.gender = "";
-        this.password_r = "";
-        this.birthday = "";
-        this.$router.push("/")
-      } catch (err) {
-        console.log(err);
-    }},
+        try {
+            await axios.post(`${process.env.VUE_APP_BACKEND}/register`, {
+            email: this.email,
+            username: this.username,
+            gender: this.gender,
+            password: this.password,
+            confirm_password: this.confirm_password,
+            birthday: this.birthday,
+            });
+            this.email = "";
+            this.username = "";
+            this.gender = "";
+            this.password = "";
+            this.confirm_password = "";
+            this.birthday = "";
+            this.off();
+            this.onn();
+        } catch (err) {
+            console.log(err);
+        }
+    },
     on(){
         document.getElementById("overlay").style.display = "block"
     },
