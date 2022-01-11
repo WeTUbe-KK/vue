@@ -5,7 +5,7 @@ exports.add = (req, res) => {
   const { user_id } = isAuth((context = { req }));
   const playListData = {
     user_id,
-    video_id: req.params.video_id,
+    video_id: req.params.id,
   };
   playList
     .create(playListData)
@@ -33,3 +33,4 @@ exports.remove = (req, res) => {
       res.status(400).json({ error: err });
     });
 };
+

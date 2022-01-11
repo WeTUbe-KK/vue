@@ -5,7 +5,7 @@ exports.add = (req, res) => {
   const { user_id } = isAuth((context = { req }));
   const watchLaterData = {
     user_id,
-    video_id: req.params.video_id,
+    video_id: req.params.id,
   };
   watchLater
     .create(watchLaterData)
