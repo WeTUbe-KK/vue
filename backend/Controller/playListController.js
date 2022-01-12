@@ -1,12 +1,29 @@
 const playList = require("../Model/playList");
+const playListCategory = require("../Model/playListCategory");
 const Video = require("../Model/video");
 const { isAuth } = require("../Util/isAuth");
+
+exports.createCategory = (req, res) => {
+  isAuth((context = { req }));
+  const playListCategoryData = {
+    name: req.body.name
+  };
+  playListCategory
+    .create(playListCategoryData)
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((error) => {
+      res.status(400).json({ error });
+    });
+};
 
 exports.add = (req, res) => {
   const { user_id } = isAuth((context = { req }));
   const playListData = {
     user_id,
     video_id: req.params.id,
+    category_id: req.body.category_id
   };
   playList
     .create(playListData)
@@ -37,7 +54,7 @@ exports.remove = (req, res) => {
 
 exports.index = (req, res) => {
   const { user_id } = isAuth((context = { req }));
-  return playList.findAll({ where: { user_id }, include: [{ model: Video, as: "Video" }] })
+  return playList.findAll({ where: { user_id }, include: [{ model: Video, as: "Video" }, { model: playListCategory, as: "playListCategory" }] })
     .then((data) => {
       const result = data.reduce((acc, curr) => {
         acc.push(curr.dataValues);

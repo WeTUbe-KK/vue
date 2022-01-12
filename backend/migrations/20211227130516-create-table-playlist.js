@@ -28,6 +28,13 @@ module.exports = {
           key: "id",
         },
       },
+      category_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "playlistcategorys",
+          key: "id",
+        },
+      },
       name: {
         type: Sequelize.STRING,
       },

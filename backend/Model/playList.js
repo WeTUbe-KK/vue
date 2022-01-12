@@ -13,6 +13,9 @@ const playList = db.sequelize.define("playlist", {
   video_id: {
     type: Sequelize.INTEGER,
   },
+  category_id: {
+    type: Sequelize.INTEGER,
+  },
 });
 
 module.exports = playList;
