@@ -35,9 +35,6 @@ module.exports = {
           key: "id",
         },
       },
-      name: {
-        type: Sequelize.STRING,
-      },
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,

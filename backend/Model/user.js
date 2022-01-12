@@ -7,6 +7,7 @@ const watchLater = require("./watchLater");
 const playList = require("./playList");
 const likeComment = require("./likeComment");
 const likeVideo = require("./likeVideo");
+const playListCategory = require("./playListCategory");
 
 const User = db.sequelize.define("user", {
   id: {
@@ -46,6 +47,10 @@ History.belongsTo(User, { as: "User", foreignKey: "user_id" });
 // Playlist
 User.hasMany(playList, { as: "playList", foreignKey: "user_id" });
 playList.belongsTo(User, { as: "User", foreignKey: "user_id" });
+
+// Playlist Category
+User.hasMany(playListCategory, { as: "playListCategory", foreignKey: "user_id" });
+playListCategory.belongsTo(User, { as: "User", foreignKey: "user_id" });
 
 // Watch Later
 User.hasMany(watchLater, { as: "watchLater", foreignKey: "user_id" });

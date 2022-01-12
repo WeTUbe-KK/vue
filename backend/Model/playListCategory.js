@@ -8,6 +8,9 @@ const playListCategory = db.sequelize.define("playlistcategorys", {
         autoIncrement: true,
         primaryKey: true,
     },
+    user_id: {
+        type: Sequelize.INTEGER,
+    },
     name: {
         type: Sequelize.STRING,
     },
