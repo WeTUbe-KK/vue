@@ -1,4 +1,5 @@
 const playList = require("../Model/playList");
+const Video = require("../Model/video");
 const { isAuth } = require("../Util/isAuth");
 
 exports.add = (req, res) => {
@@ -34,3 +35,17 @@ exports.remove = (req, res) => {
     });
 };
 
+exports.index = (req, res) => {
+  const { user_id } = isAuth((context = { req }));
+  return playList.findAll({ where: { user_id }, include: [{ model: Video, as: "Video" }] })
+    .then((data) => {
+      const result = data.reduce((acc, curr) => {
+        acc.push(curr.dataValues);
+        return acc;
+      }, []);
+      res.status(200).json({ data: result });
+    })
+    .catch((err) => {
+      res.status(400).json({ error: err });
+    });
+};
