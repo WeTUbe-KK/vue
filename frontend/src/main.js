@@ -12,6 +12,7 @@ import Your_video from "./components/your_video.vue";
 import Watch_later from "./components/watch_later.vue";
 import playlist from "./components/playlist.vue";
 import addPlaylist from "./components/addPlaylist.vue";
+import videoPlayer from "./components/videoPlayer.vue";
 
 Vue.use(VueRouter);
 
@@ -90,7 +91,13 @@ const routes = [
     path: "/addPlaylist",
     component: addPlaylist,
     beforeEnter: ifAuthenticated,
-  }
+  },
+  {
+    name: "videoPlayer",
+    path: "/video/:id",
+    component: videoPlayer,
+    beforeEnter: ifAuthenticated,
+  },
 ];
 
 const router = new VueRouter({ mode: "history", routes: routes });
