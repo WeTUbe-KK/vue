@@ -40,7 +40,7 @@
             <input required v-model="password" type="password" />
             <label>Password</label>
           </div>
-
+          <small v-if="error" class="text-danger d-block mb-3">{{ errorMessage }}</small>
           <!-- <div class="pass">Forget Password ?</div> -->
           <!-- <button type="submit">Login</button> -->
           <button type="submit" class="btn btn-sm btn-light">Login</button>
@@ -93,6 +93,7 @@
               <label>Gender</label>
             </div>
           </div>
+          <small v-if="errorRegister" class="text-danger d-block mb-3">{{ errorRegisterMessage }}</small>
           <button type="submit" class="btn btn-sm btn-light">Register</button>
         </form>
       </div>
@@ -230,6 +231,10 @@ export default {
       confirm_password: "",
       birthday: "",
       gender: "",
+      errorMessage:"",
+      error:false,
+      errorRegisterMessage: "",
+      errorRegister: false
     };
   },
   methods: {
@@ -245,7 +250,8 @@ export default {
         localStorage.setItem("user-token", token);
         this.$router.push("/home");
       } catch (err) {
-        console.log(err);
+        this.error = true
+        this.errorMessage = err.response.data.error
       }
     },
     async register() {
@@ -267,7 +273,8 @@ export default {
         this.off();
         this.onn();
       } catch (err) {
-        console.log(err);
+        this.errorRegister = true
+        this.errorRegsiterMessage = err.response.data.error
       }
     },
     on() {

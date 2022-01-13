@@ -119,8 +119,13 @@
             </div>
             <div class="lists lists-videos py-5">
                 <div class="videos" style="display: flex; align-items: center; margin-bottom: 5%;" v-for="(item, index) in playlist" :key="item.id">
-                    <h4 style="margin: 0 1.5%;">{{ index + 1 }}</h4>
-                    <div class="video"><img class="mx-auto  w-100 h-100" :src="getImgUrl(item)" /></div>
+                    <h4 style="margin: 0 1.5%;">{{ index+1 }}</h4>
+                    <div class="video"><img class="mx-auto  w-100 h-100" :src="getPlayListUrl(item)" /></div>
+                    <div class="d-flex ms-2 flex-column">
+                        <p>{{ item.Video.name }}</p>
+                        <p>{{ item.User.username }}</p>
+                        <small>{{ item.Video.description }}</small>
+                    </div>
                     <h5 style="margin: 0 1.5%;"></h5>
                 </div>                      
             </div>
@@ -153,16 +158,18 @@
                             Authorization: `Bearer ${localStorage.getItem("user-token")}`,
                         },
                     }
-                ); 
-                console.log(response.data.data)           
+                );       
                 this.video = response.data.data;
+                if(this.video.length > 0){
+                    this.playlist = this.video[0].playList;
+                }
             } catch (err){
                     console.log(err);
                 }
             },
             getImgUrl(pic) {
                 if(pic.playList.length == 0){
-                    return '';
+                    return 'https://picsum.photos/200/200?random=1';
                 }else{
                     const image = pic.playList[0].Video.path.split("/");
                     image.splice(6, 0, "w_200,h_200,c_scale");
@@ -189,12 +196,16 @@
                 document.getElementById("overlay2").style.display = "none"
             },
             listVideo(item){
-                // document.getElementsByClassName('videos');
                 if(item.playList.length == 0){
                     this.playlist = [];                
                 }else{
-                    this.playlist = item.playlists;
+                    this.playlist = item.playList;
                 }
+            },
+            getPlayListUrl(item){
+                const image = item.Video.path.split("/");
+                image.splice(6, 0, "w_200,h_200,c_scale");
+                return image.join("/").slice(0, -4) + ".jpg";
             }
         }
     };

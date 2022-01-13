@@ -1,6 +1,7 @@
 const playList = require("../Model/playList");
 const playListCategory = require("../Model/playListCategory");
 const Video = require("../Model/video");
+const User = require("../Model/user");
 const { isAuth } = require("../Util/isAuth");
 
 exports.createCategory = (req, res) => {
@@ -58,7 +59,7 @@ exports.index = (req, res) => {
   return playListCategory
     .findAll({
       where: { user_id },
-      include: [{ model: playList, as: "playList", include: [{ model: Video, as: "Video" }] }],
+      include: [{ model: playList, as: "playList", include: [{ model: Video, as: "Video" }, { model: User, as: "User" }] }],
     })
     .then((data) => {
       const result = data.reduce((acc, curr) => {

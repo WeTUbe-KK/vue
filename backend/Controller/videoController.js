@@ -4,7 +4,7 @@ const cloudinary = require("cloudinary").v2;
 const likeComment = require("../Model/likeComment");
 const Comment = require("../Model/comment");
 const likeVideo = require("../Model/likeVideo");
-const User = require("../Model/User");
+const User = require("../Model/user");
 
 exports.upload = (req, res) => {
   const { user_id } = isAuth((context = { req }));

@@ -98,6 +98,7 @@
           <div class="card-body">
             <p>{{ item.name }}</p>
             <p>{{ item.view }}</p>
+            <p>{{ item.User.username }}</p>
           </div>
         </div>
       </div>
@@ -155,6 +156,8 @@ export default {
         this.disabled = false;
         this.$router.push("/home");
       } catch (err) {
+        this.loading = false;
+        this.disabled = false;
         console.log(err);
       }
     },
