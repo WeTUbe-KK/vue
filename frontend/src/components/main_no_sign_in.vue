@@ -124,7 +124,7 @@
       </div>
     </nav>
 
-    <div class="sidebar">
+    <!-- <div class="sidebar">
       <div class="shortcut">
         <a href="#"
           ><img src="../assets/photo/dark_mode/home_icon.png" alt="home" />
@@ -190,38 +190,20 @@
       <div class="subscriptions">
         <h6>Subscriptions</h6>
       </div>
-    </div>
+    </div> -->
 
     <!-- ------tempat taruh video------- -->
 
-    <div class="container">
-      <div class="list">
-        <div class="video_list">
-          <a href="#">
-            <!-- gambar thumbnail -->
-            <div class="flex">
-              <!-- gambar user -->
-              <div class="video_info">
-                <p></p>
-                <!--judul-->
-                <p></p>
-                <!--user-->
-                <p></p>
-                <!--view-->
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
+    <list-video></list-video>
   </div>
 </template>
 <script>
 import axios from "axios";
+import listVideo from './listVideo.vue';
 
 export default {
   name: "main_no_sign_in",
-
+  components: { "list-video":listVideo },
   data() {
     return {
       video: [],

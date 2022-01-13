@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="overlay">
+    <!-- <div id="overlay">
       <div id="form_input_video">
         <img src="../assets/photo/white_mode/close_icon.png" v-on:click="off()" />
         <h3>Upload Video</h3>
@@ -15,8 +15,6 @@
           <textarea id="w3review" name="w3review" rows="2" cols="80" v-model="title" :disabled="disabled"></textarea>
           <h3>Description</h3>
           <textarea id="w3review" name="w3review" rows="5" cols="80" v-model="description" :disabled="disabled"></textarea>
-          <!-- <h3>thumbnail</h3>
-              <input type="file" id="myFile" name="filename"> -->
           <div class="spinner-border d-block my-2" role="status" v-if="loading">
             <span class="sr-only"></span>
           </div>
@@ -25,9 +23,11 @@
           </div>
         </form>
       </div>
-    </div>
+    </div> -->
 
-    <nav class="flex">
+    <navbar></navbar>
+
+    <!-- <nav class="flex">
       <div class="navbar_left flex">
         <img src="../assets/photo/dark_mode/menu_icon.png" alt="menu_icon" class="menu_icon" />
         <h3>WeTube</h3>
@@ -43,9 +43,11 @@
           <p class="m-0">Sign Out</p>
         </div>
       </div>
-    </nav>
+    </nav> -->
 
-    <div class="sidebar">
+    <sidebar></sidebar>
+
+    <!-- <div class="sidebar">
       <div class="shortcut">
         <a href="/home"
           ><img src="../assets/photo/dark_mode/home_icon.png" alt="home" />
@@ -88,10 +90,11 @@
       <div class="subscriptions">
         <h6>Subscriptions</h6>
       </div>
-    </div>
+    </div> -->
 
     <!-- ------tempat taruh video------- -->
-    <div class="container">
+    <list-video></list-video>
+    <!-- <div class="container">
       <div class="video_list" v-for="item in video" :key="item.id">
         <div class="card me-5">
           <img class="mx-auto my-2" :src="getImgUrl(item.path)" />
@@ -102,15 +105,23 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import sidebar from "./sidebar.vue";
+import navbar from "./navbar.vue";
+import listVideo from "./listVideo.vue"
 
 export default {
   name: "main_sign_in",
+  components:{
+    sidebar,
+    navbar,
+    "list-video" : listVideo
+  },
   data() {
     return {
       video: [],
@@ -122,9 +133,9 @@ export default {
       disabled: false,
     };
   },
-  created() {
-    this.getVideo();
-  },
+  // created() {
+  //   this.getVideo();
+  // },
   /*
   mounted() {
     let mainScript = document.createElement('script')
@@ -161,23 +172,23 @@ export default {
         console.log(err);
       }
     },
-    async getVideo() {
-      try {
-        const response = await axios.get(`${process.env.VUE_APP_BACKEND}/video`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("user-token")}`,
-          },
-        });
-        this.video = response.data.data;
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    getImgUrl(pic) {
-      const image = pic.split("/");
-      image.splice(6, 0, "w_200,h_200,c_scale");
-      return image.join("/").slice(0, -4) + ".jpg";
-    },
+    // async getVideo() {
+    //   try {
+    //     const response = await axios.get(`${process.env.VUE_APP_BACKEND}/video`, {
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+    //       },
+    //     });
+    //     this.video = response.data.data;
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // },
+    // getImgUrl(pic) {
+    //   const image = pic.split("/");
+    //   image.splice(6, 0, "w_200,h_200,c_scale");
+    //   return image.join("/").slice(0, -4) + ".jpg";
+    // },
     signout() {
       localStorage.removeItem("user-token");
       this.$router.push("/");

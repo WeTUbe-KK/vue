@@ -34,7 +34,9 @@
         <div class="navbar_right flex"></div>
     </nav>
 
-    <div class="sidebar">
+    <sidebar></sidebar>
+
+    <!-- <div class="sidebar">
         <div class="shortcut">
             <a href="/home"><img src="../assets/photo/dark_mode/home_icon.png" alt="home"><p>Home</p></a>
             <router-link :to="{ name: ['explore'] }"><img src="../assets/photo/white_mode/explore_icon.png" alt="Explore"><p>Explore</p></router-link>
@@ -52,7 +54,7 @@
         <div class="subscriptions">
             <h6>Subscriptions</h6>
         </div>
-    </div>
+    </div> -->
 
 
 <!-- ------tempat taruh video------- -->
@@ -79,9 +81,11 @@
 </template>
 <script>
 import axios from "axios";
+import sidebar from './sidebar.vue';
 
 export default {
   name: "subscription",
+  components : { sidebar },
   data() {
     return {
       video: [],

@@ -38,7 +38,9 @@
             </div>
         </nav>
 
-        <div class="sidebar">
+        <sidebar></sidebar>
+
+        <!-- <div class="sidebar">
             <div class="shortcut">
                 <a href="/home">
                     <img src="../assets/photo/dark_mode/home_icon.png" alt="home">
@@ -82,7 +84,7 @@
             <div class="subscriptions">
                 <h6>Subscriptions</h6>
             </div>
-        </div>
+        </div> -->
 
         <div class="addplaylist bg-dark">
             <div style="text-align: center;">
@@ -100,8 +102,10 @@
 
 <script>
 import axios from "axios";
+import sidebar from './sidebar.vue';
 
 export default {
+  components: { sidebar },
   name: "addPlaylist",
   data() {
     return {
