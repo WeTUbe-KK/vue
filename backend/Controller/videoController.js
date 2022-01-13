@@ -39,9 +39,13 @@ exports.remove = (req, res) => {
       await Video.destroy({ where: { id } });
       const split = path.split("/");
       const temp = "Asset/" + split[split.length - 1].split(".")[0];
-      cloudinary.api.delete_resources(temp, { resource_type: "video" }, (error, result) => {
-        res.status(200).json({ success: true, error, data: path });
-      });
+      cloudinary.api.delete_resources(
+        temp,
+        { resource_type: "video" },
+        (error, result) => {
+          res.status(200).json({ success: true, error, data: path });
+        }
+      );
     })
     .catch((err) => {
       res.status(400).json({ error: err });
@@ -102,16 +106,19 @@ exports.getById = (req, res) => {
     .then(async (data) => {
       const { likeVideo, Comment, ...videoData } = data.dataValues;
       const result = Comment.reduce((acc, curr) => {
-        const likeComment = curr.dataValues.likeComment.reduce((acc1, curr1) => {
-          let countLike = 0;
-          let countDislike = 0;
-          if (curr1.dataValues.status_like) {
-            countLike = countLike + 1;
-          } else {
-            countDislike = countDislike + 1;
-          }
-          return { countLike, countDislike };
-        }, []);
+        const likeComment = curr.dataValues.likeComment.reduce(
+          (acc1, curr1) => {
+            let countLike = 0;
+            let countDislike = 0;
+            if (curr1.dataValues.status_like) {
+              countLike = countLike + 1;
+            } else {
+              countDislike = countDislike + 1;
+            }
+            return { countLike, countDislike };
+          },
+          []
+        );
         curr.dataValues.likeComment = likeComment.countLike;
         curr.dataValues.dislikeComment = likeComment.countDislike;
         acc.push(curr.dataValues);
@@ -131,6 +138,17 @@ exports.getById = (req, res) => {
       videoData.likeVideo = likeVideoCount.countLike;
       videoData.dislikeVideo = likeVideoCount.countDislike;
       res.status(200).json({ data: videoData });
+    })
+    .catch((err) => {
+      res.status(400).json({ error: err });
+    });
+};
+
+exports.getUploadedVideo = (req, res) => {
+  const { user_id } = isAuth((context = { req }));
+  Video.findAll({ where: { user_id }, include: [{ model: User, as: "User" }] })
+    .then((data) => {
+      res.status(200).json({ data });
     })
     .catch((err) => {
       res.status(400).json({ error: err });

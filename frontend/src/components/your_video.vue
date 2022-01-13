@@ -1,26 +1,26 @@
 <template>
   <div>
     <div id="overlay">
-        <div id="form_input_video">
-            <img src="../assets/photo/white_mode/close_icon.png" v-on:click="off()">
-            <h3>Upload Video</h3>
-            <div class="drag-area">
-                <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                <header>Drag & Drop to Upload File</header>
-                <span>OR</span>
-                <button>Browse File</button>
-                <input type="file" hidden>
-            </div>
-            <h3>Title (required)</h3>
-            <textarea id="w3review" name="w3review" rows="2" cols="80"></textarea>
-            <h3>Description</h3>
-            <textarea id="w3review" name="w3review" rows="5" cols="80"></textarea>
-            <h3>thumbnail</h3>
-            <input type="file" id="myFile" name="filename">
+      <div id="form_input_video">
+        <img src="../assets/photo/white_mode/close_icon.png" v-on:click="off()" />
+        <h3>Upload Video</h3>
+        <div class="drag-area">
+          <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+          <header>Drag & Drop to Upload File</header>
+          <span>OR</span>
+          <button>Browse File</button>
+          <input type="file" hidden />
         </div>
+        <h3>Title (required)</h3>
+        <textarea id="w3review" name="w3review" rows="2" cols="80"></textarea>
+        <h3>Description</h3>
+        <textarea id="w3review" name="w3review" rows="5" cols="80"></textarea>
+        <h3>thumbnail</h3>
+        <input type="file" id="myFile" name="filename" />
+      </div>
     </div>
 
-    <nav class="flex">
+    <!-- <nav class="flex">
         <div class="navbar_left flex">
             <img src="../assets/photo/dark_mode/menu_icon.png" alt="menu_icon" class="menu_icon">
             <h3>WeTube</h3>
@@ -32,7 +32,8 @@
             </div>
         </div>
         <div class="navbar_right flex"></div>
-    </nav>
+    </nav> -->
+    <navbar></navbar>
 
     <sidebar></sidebar>
 
@@ -56,35 +57,37 @@
         </div>
     </div> -->
 
-
-<!-- ------tempat taruh video------- -->
-
+    <!-- ------tempat taruh video------- -->
 
     <div class="container">
-        <div class="list">
-            <div class="video_list" v-for="item in video" :key="item.id">
-                <a href="">
-                    <!-- gambar thumbnail -->
-                    <div class="flex">
-                        <!-- gambar user -->
-                        <div class="video_info">
-                            <p></p>     <!--judul-->
-                            <p></p>     <!--user-->
-                            <p></p>     <!--view-->
-                        </div>
-                    </div>
-                </a>
+      <div class="list">
+        <div class="video_list" v-for="item in video" :key="item.id">
+          <a href="">
+            <!-- gambar thumbnail -->
+            <div class="flex">
+              <!-- gambar user -->
+              <div class="video_info">
+                <p></p>
+                <!--judul-->
+                <p></p>
+                <!--user-->
+                <p></p>
+                <!--view-->
+              </div>
             </div>
+          </a>
         </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import axios from "axios";
-import sidebar from './sidebar.vue';
+import sidebar from "./sidebar.vue";
+import navbar from "./navbar.vue";
 
 export default {
-  components: { sidebar },
+  components: { sidebar, navbar },
   name: "your_video",
   data() {
     return {
@@ -94,7 +97,7 @@ export default {
   created() {
     this.getVideo();
   },
-/*
+  /*
   mounted() {
     let mainScript = document.createElement('script')
     mainScript.setAttribute('src', '../assets/main2.js')
@@ -102,29 +105,29 @@ export default {
   },
   */
   methods: {
-  async  getVideo() {
+    async getVideo() {
       try {
-        const response = await axios.put(`http://localhost:3000/video`)
+        const response = await axios.put(`http://localhost:3000/video`);
         this.video = response.data.response;
-      } catch (err){
+      } catch (err) {
         console.log(err);
       }
     },
-    on(){
-        document.getElementById("overlay").style.display = "block"
+    on() {
+      document.getElementById("overlay").style.display = "block";
     },
-    onn(){
-        document.getElementById("overlay1").style.display = "block"
+    onn() {
+      document.getElementById("overlay1").style.display = "block";
     },
-    onnn(){
-        document.getElementById("overlay1").style.display = "none"
-        document.getElementById("overlay2").style.display = "block"
+    onnn() {
+      document.getElementById("overlay1").style.display = "none";
+      document.getElementById("overlay2").style.display = "block";
     },
-    off(){
-        document.getElementById("overlay").style.display = "none"
-        document.getElementById("overlay1").style.display = "none"
-        document.getElementById("overlay2").style.display = "none"
+    off() {
+      document.getElementById("overlay").style.display = "none";
+      document.getElementById("overlay1").style.display = "none";
+      document.getElementById("overlay2").style.display = "none";
     },
-  }, 
+  },
 };
 </script>
