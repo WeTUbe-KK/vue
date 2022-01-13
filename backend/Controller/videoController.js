@@ -62,12 +62,10 @@ exports.findOne = (id) => {
     });
 };
 
-exports.view = (req, res) => {
-  isAuth((context = { req }));
-  Video.increment({ view: +1 }, { where: { id: req.params.id } })
+exports.view = async (id) => {
+  Video.increment({ view: +1 }, { where: { id } })
     .then(async () => {
-      const video = await Video.findOne({ where: { id: req.params.id } });
-      res.status(200).json({ data: video.dataValues });
+      res.status(200).json({ data: "success" });
     })
     .catch((err) => {
       res.status(400).json({ error: err });

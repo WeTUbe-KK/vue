@@ -37,7 +37,7 @@ router.get("/:id", videoController.getById);
 router.post("/upload", multerUpload.single("video"), videoController.upload);
 router.put("/like/:id", likeVideoController.like);
 router.put("/dislike/:id", likeVideoController.dislike);
-router.put("/view/:id", videoController.view);
+// router.put("/view/:id", videoController.view);
 router.delete("/:id", videoController.remove);
 
 module.exports = router;

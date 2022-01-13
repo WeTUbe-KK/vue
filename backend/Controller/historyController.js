@@ -1,5 +1,6 @@
 const history = require("../Model/history");
 const { isAuth } = require("../Util/isAuth");
+const videoController = require("../Controller/videoController")
 
 exports.add = (req, res) => {
   const { user_id } = isAuth((context = { req }));
@@ -9,7 +10,8 @@ exports.add = (req, res) => {
   };
   history
     .create(historyData)
-    .then((data) => {
+    .then(async (data) => {
+      await videoController.view(req.params.id)
       res.status(200).json(data);
     })
     .catch((error) => {

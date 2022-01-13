@@ -1,3 +1,4 @@
+const User = require("../Model/user");
 const watchLater = require("../Model/watchLater");
 const { isAuth } = require("../Util/isAuth");
 
@@ -36,7 +37,7 @@ exports.remove = (req, res) => {
 
 exports.index = (req, res) => {
   const { user_id } = isAuth((context = { req }));
-  return watchLater.findAll({ where: { user_id }, include: [{ model: Video, as: "Video" }] })
+  return watchLater.findAll({ where: { user_id }, include: [{ model: Video, as: "Video", include: [{ model: User, as: "User" }] }] })
     .then((data) => {
       const result = data.reduce((acc, curr) => {
         acc.push(curr.dataValues);

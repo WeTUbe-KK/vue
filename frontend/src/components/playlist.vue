@@ -123,7 +123,7 @@
                     <div class="video"><img class="mx-auto  w-100 h-100" :src="getPlayListUrl(item)" /></div>
                     <div class="d-flex ms-2 flex-column">
                         <p>{{ item.Video.name }}</p>
-                        <p>{{ item.User.username }}</p>
+                        <p>{{ item.Video.User.username }}</p>
                         <small>{{ item.Video.description }}</small>
                     </div>
                     <h5 style="margin: 0 1.5%;"></h5>

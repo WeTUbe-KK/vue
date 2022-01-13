@@ -59,7 +59,7 @@ exports.index = (req, res) => {
   return playListCategory
     .findAll({
       where: { user_id },
-      include: [{ model: playList, as: "playList", include: [{ model: Video, as: "Video" }, { model: User, as: "User" }] }],
+      include: [{ model: playList, as: "playList", include: [{ model: Video, as: "Video", include: [{ model: User, as: "User" }] }] }],
     })
     .then((data) => {
       const result = data.reduce((acc, curr) => {

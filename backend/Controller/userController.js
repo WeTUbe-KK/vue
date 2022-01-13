@@ -35,7 +35,7 @@ exports.register = (req, res) => {
           userData.password = hash;
           User.create(userData)
             .then((user) => {
-              res.status(200).json(user);
+              res.status(200).json({ error: "", data: "success" });
             })
             .catch((err) => {
               res.send("error: " + err);
