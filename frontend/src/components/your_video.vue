@@ -45,7 +45,7 @@
             <router-link :to="{ name: ['history'] }"><img src="../assets/photo/dark_mode/history_icon.png" alt="history"><p>History</p></router-link>
             <router-link :to="{ name: ['your_video'] }"><img src="../assets/photo/white_mode/your_video_icon.png" alt="Your Video"><p>Your Video</p></router-link>
             <router-link :to="{ name: ['watch_later'] }"><img src="../assets/photo/white_mode/time_icon.png" alt="Watch Later"><p>Watch Later</p></router-link>
-            <a href="#"><img src="../assets/photo/white_mode/showmore_icon.png" alt="Show More"><p>Show More</p></a>
+            <router-link :to="{ name: ['playlist'] }"><img src="../assets/photo/white_mode/showmore_icon.png" alt="playlist"><p>Playlist</p></router-link>            
             <hr>
         </div>
 

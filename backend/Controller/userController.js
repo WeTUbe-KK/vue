@@ -68,7 +68,7 @@ exports.login = (req, res) => {
             { user_id: user.dataValues.id },
             process.env.SECRET_KEY,
             {
-              expiresIn: "1d",
+              expiresIn: '1d',
             }
           );
           res.status(200).json({ error: "", data: token });

@@ -4,7 +4,7 @@ const Video = require("../Model/video");
 const { isAuth } = require("../Util/isAuth");
 
 exports.createCategory = (req, res) => {
-  const { user_id } = sAuth((context = { req }));
+  const { user_id } = isAuth((context = { req }));
   const playListCategoryData = {
     name: req.body.name,
     user_id

@@ -4,6 +4,7 @@ const cloudinary = require("cloudinary").v2;
 const likeComment = require("../Model/likeComment");
 const Comment = require("../Model/comment");
 const likeVideo = require("../Model/likeVideo");
+const User = require("../Model/User");
 
 exports.upload = (req, res) => {
   const { user_id } = isAuth((context = { req }));
@@ -74,7 +75,7 @@ exports.view = (req, res) => {
 };
 
 exports.index = (req, res) => {
-  return Video.findAll()
+  return Video.findAll({ include: [{ model: User, as: "User" }] })
     .then((data) => {
       const result = data.reduce((acc, curr) => {
         acc.push(curr.dataValues);

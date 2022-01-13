@@ -64,4 +64,5 @@ likeComment.belongsTo(User, { as: "User", foreignKey: "user_id" });
 User.hasOne(likeVideo, { as: "likeVideo", foreignKey: "user_id" });
 likeVideo.belongsTo(User, { as: "User", foreignKey: "user_id" });
 
+
 module.exports = User;

@@ -77,10 +77,11 @@
           ><img src="../assets/photo/white_mode/time_icon.png" alt="Watch Later" />
           <p>Watch Later</p></router-link
         >
-        <a href="#"
-          ><img src="../assets/photo/white_mode/showmore_icon.png" alt="Show More" />
-          <p>Show More</p></a
-        >
+        <router-link :to="{ name: ['playlist'] }"
+          ><img src="../assets/photo/white_mode/showmore_icon.png" 
+            alt="playlist" />
+            <p>Playlist</p>
+        </router-link>            
         <hr />
       </div>
 
@@ -103,6 +104,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import axios from "axios";
 

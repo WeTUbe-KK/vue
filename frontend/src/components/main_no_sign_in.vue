@@ -178,10 +178,10 @@
         >
         <a href="#"
           ><img
-            src="../assets/photo/white_mode/showmore_icon.png"
-            alt="Show More"
+            src="../assets/photo/white_mode/showmore_icon.png" 
+            alt="playlist"
           />
-          <p>Show More</p></a
+          <p>Playlist</p></a
         >
         <hr />
       </div>
