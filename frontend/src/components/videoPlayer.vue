@@ -22,7 +22,7 @@
           <div class="play_info">
             <p>Views : {{ video.view }}</p>
             <div>
-              <a href="#"><img src="../assets/photo/white_mode/like_icon.png" alt="like" />jumlah like</a>
+              <a href="#"><img src="../assets/photo/white_mode/like_icon.png" alt="like" />Like</a>
               <a href="#"><img src="../assets/photo/white_mode/dislike_icon.png" alt="dislike" />Dislike</a>
               <a href="#"><img src="../assets/photo/white_mode/share_icon.png" alt="share" />Share</a>
               <a href="#"><img src="../assets/photo/white_mode/list_plus_icon_175099.png" alt="save" />Save</a>
@@ -54,9 +54,9 @@
                 <p>isi comment</p>
                 <div class="comment_action">
                   <img src="../assets/photo/white_mode/like_icon.png" />
-                  <span>jumlah like</span>
+                  <span>Like</span>
                   <img src="../assets/photo/white_mode/dislike_icon.png" />
-                  <span>dislike</span>
+                  <span>Dislike</span>
                   <span>replay</span>
                   <a href="">all replies</a>
                 </div>
