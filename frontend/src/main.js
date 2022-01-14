@@ -13,6 +13,7 @@ import Watch_later from "./components/watch_later.vue";
 import playlist from "./components/playlist.vue";
 import addPlaylist from "./components/addPlaylist.vue";
 import videoPlayer from "./components/videoPlayer.vue";
+import create_account from "./create_accout.vue"
 
 Vue.use(VueRouter);
 
@@ -97,6 +98,11 @@ const routes = [
     path: "/video/:id",
     component: videoPlayer
   },
+  {
+    name:"create_account",
+    path:"/sign_up",
+    component: create_account
+  }
 ];
 
 const router = new VueRouter({ mode: "history", routes: routes });

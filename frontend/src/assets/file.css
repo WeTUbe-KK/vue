@@ -414,38 +414,38 @@ nav{
 .drag-area{
     margin : auto;
     border : 2px dashed #fff;
-    height : 500px;
-    width : 700px;
+    height : 100%;
+    width : 80%;
     border-radius:5px;
     display: flex;
     align-items : center;
     justify-content : center;
     flex-direction: column;
-}
-
-.drag-area.active{
+  }
+  
+  .drag-area.active{
     border : 2px solid #fff;
-}
-
-.drag-area .icon{
+  }
+  
+  .drag-area .icon{
     font-size: 100px;
     color: #fff;
-}
-
-.drag-area header{
+  }
+  
+  .drag-area header{
     font-size: 30px;
     font-weight: 500;
     color: #fff;
-}
-
-.drag-area span{
+  }
+  
+  .drag-area span{
     font-size: 25px;
     font-weight: 500;
     color: #fff;
     margin: 10px 0 15px 0;
-}
-
-.drag-area button{
+  }
+  
+  .drag-area button{
     padding: 10px 25px;
     font-size: 20px;
     font-weight: 500;
@@ -455,14 +455,16 @@ nav{
     color: #5256ad;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.drag-area img{
+    margin-bottom: 10px;
+    width : 40%
+  }
+  
+  .drag-area img{
     height: 100%;
     width: 100%;
     object-fit: cover;
     border-radius: 5px;
-}
+  }
 
 #overlay{
     position: fixed;
@@ -740,3 +742,86 @@ input[type='submit']{
         height: 100vh;
     }        
 }
+
+.bodys{
+    background : #bababa !important
+  }
+  
+  .link{
+    text-decoration : none!important
+  }
+  
+  .create_acc{
+    width : 40% !important;
+  }
+  
+  .create_acc img{
+    width : 20px;
+    float: right;
+    padding-top: 10px;
+  }
+  
+  .create_acc p{
+    text-align: center;
+  }
+  
+  .judul{
+    font-size: 30px;
+    padding-top : 30px;
+    text-align: center
+  }
+  
+  .tombol_create_acc{
+    color : #fff !important;
+    width : 100% ;
+    background : rgb(90, 90, 90)!important
+  }
+  
+  @media only screen and (max-width: 1400px) {
+    .create_acc{
+      width : 50% !important
+    }
+  }
+  
+  @media only screen and (max-width: 670px) {
+    .create_acc{
+      width : 75% !important
+    }
+  }
+  body {
+    background :#bababa !important
+  }
+  
+  .upload{
+    padding : 10px !important;
+    background : rgb(153, 153, 153)!important;
+    width : 50% !important;
+  }
+  
+  .upload img{
+    width :20px;
+    float : right;
+  }
+  
+  .upload h1{
+    font-size : 30px;
+    text-align : center;
+  }
+  .textarea_upload{
+    border-radius: 5px;
+    font-size: 20px;
+    background : #3d3d3d;
+    resize: none;
+    width : 100%
+  }
+  
+  .h3_upload{
+    font-size:25px;
+    padding-top : 10px;
+  }
+  
+  .tombol_upload{
+    width : 100%;
+    margin-top: 20px !important;
+    margin-bottom: 5px !important;
+  }
