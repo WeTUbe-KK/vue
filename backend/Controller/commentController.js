@@ -3,7 +3,6 @@ const { isAuth } = require("../Util/isAuth");
 
 exports.register = (req, res) => {
   const { user_id } = isAuth((context = { req }));
-  console.log(req.body);
   const commentData = {
     user_id,
     video_id: req.params.id,

@@ -1,6 +1,9 @@
 const User = require("../Model/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const playList = require("../Model/playList");
+const { isAuth } = require("../Util/isAuth");
+const playListCategory = require("../Model/playListCategory");
 
 process.env.SECRET_KEY = "secret";
 
@@ -83,3 +86,10 @@ exports.login = (req, res) => {
       res.status(500).json({ error: "Kesalahan pada server" });
     });
 };
+
+exports.find_one = (req, res) => {
+  const { user_id } = isAuth((context = { req }));
+  User.findOne({ where: { id: user_id }, include: [{ model: playListCategory, as: 'playListCategory' }] }).then(data => res.status(200).json({ error: "", data })).catch(err => {
+    res.status(500).json({ error: "Kesalahan pada server" })
+  })
+}

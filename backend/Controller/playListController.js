@@ -22,19 +22,31 @@ exports.createCategory = (req, res) => {
 
 exports.add = (req, res) => {
   const { user_id } = isAuth((context = { req }));
-  const playListData = {
-    user_id,
-    video_id: req.params.id,
-    category_id: req.body.category_id,
-  };
-  playList
-    .create(playListData)
-    .then((data) => {
-      res.status(200).json(data);
-    })
-    .catch((error) => {
-      res.status(400).json({ error });
-    });
+  playList.findOne({
+    where: {
+      user_id,
+      video_id: req.params.id,
+      category_id: req.body.category_id,
+    }
+  }).then(async data => {
+    const videoResponse = await Video.findOne({ where: { id: req.params.id, user_id } })
+    if (!data && !videoResponse) {
+      const playListData = {
+        user_id,
+        video_id: req.params.id,
+        category_id: req.body.category_id,
+      };
+      playList
+        .create(playListData)
+        .then((data) => {
+          res.status(200).json(data);
+        })
+        .catch((error) => {
+          res.status(400).json({ error });
+        });
+    }
+    res.status(200).json({ data: "success" })
+  }).catch(err => res.status(400).json({ error: err }))
 };
 
 exports.remove = (req, res) => {

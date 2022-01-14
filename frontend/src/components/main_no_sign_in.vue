@@ -219,6 +219,11 @@ export default {
       errorRegister: false
     };
   },
+  beforeMount(){
+    if(localStorage.getItem('user-token')){
+      this.$router.push("/home");
+    }
+  },
   methods: {
     async login() {
       try {

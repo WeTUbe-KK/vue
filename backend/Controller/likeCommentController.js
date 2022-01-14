@@ -5,7 +5,7 @@ const Comment = require("../Model/comment");
 exports.like = (req, res) => {
   const { user_id } = isAuth((context = { req }));
   likeComment
-    .findOne({ where: { user_id, video_id: req.params.id } })
+    .findOne({ where: { user_id, comment_id: req.body.comment_id } })
     .then(async (data) => {
       if (!data) {
         const likeData = {
@@ -19,7 +19,7 @@ exports.like = (req, res) => {
         dataFromDB = await likeComment.update(
           { status_like: true },
           {
-            where: { user_id, video_id: req.params.id },
+            where: { user_id, comment_id: req.body.comment_id },
           }
         );
       }
@@ -27,14 +27,14 @@ exports.like = (req, res) => {
       res.status(200).json(comment);
     })
     .catch((err) => {
-      console.log(err);
+      res.status(400).json({ error: err })
     });
 };
 
 exports.dislike = (req, res) => {
   const { user_id } = isAuth((context = { req }));
   likeComment
-    .findOne({ where: { user_id, video_id: req.params.id } })
+    .findOne({ where: { user_id, comment_id: req.body.comment_id } })
     .then(async (data) => {
       if (!data) {
         const likeData = {
@@ -48,7 +48,7 @@ exports.dislike = (req, res) => {
         dataFromDB = await likeComment.update(
           { status_like: false },
           {
-            where: { user_id, video_id: req.params.id },
+            where: { user_id, comment_id: req.body.comment_id },
           }
         );
       }
@@ -56,6 +56,6 @@ exports.dislike = (req, res) => {
       res.status(200).json(comment);
     })
     .catch((err) => {
-      console.log(err);
+      res.status(400).json({ error: err });
     });
 };

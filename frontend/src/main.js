@@ -95,8 +95,7 @@ const routes = [
   {
     name: "videoPlayer",
     path: "/video/:id",
-    component: videoPlayer,
-    beforeEnter: ifAuthenticated,
+    component: videoPlayer
   },
 ];
 

@@ -9,9 +9,19 @@
             <p>{{ item.view }}</p>
             <p>{{ item.User.username }}</p>
           </div>
-          <div class="d-flex flex-column">
-            <button v-if="authenticate" class="btn btn-outline-dark" style="height: fit-content" v-on:click="addWatchLater(item.id)">Add to Playlist</button>
-            <button v-if="authenticate" class="btn btn-outline-info" style="height: fit-content" v-on:click="addWatchLater(item.id)">Watch Later</button>
+          <div v-if="authenticate" class="d-flex flex-column">
+            <button class="btn btn-outline-info" style="height: fit-content" v-on:click="addWatchLater(item.id)">Watch Later</button>
+            <div class="dropdown">
+              <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Add To PlayList
+              </button>
+              <div class="dropdown-menu" v-if="playListData.length > 0" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" v-for="play_list in playListData" :key="play_list.id" v-on:click="addPlayListCategory(play_list.id,item.id)">{{ play_list.name }}</a>
+              </div>
+              <div class="dropdown-menu" v-else aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item m-0" >No Playlist</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -27,6 +37,7 @@ export default {
     return {
       video: [],
       authenticate: localStorage.getItem("user-token") || false,
+      playListData: []
     };
   },
   created() {
@@ -41,6 +52,12 @@ export default {
           },
         });
         this.video = response.data.data;
+        const response1 = await axios.get(`${process.env.VUE_APP_BACKEND}/user`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+          },
+        });
+        this.playListData = response1.data.data.playListCategory
       } catch (err) {
         console.log(err);
       }
@@ -66,6 +83,22 @@ export default {
         console.log(err);
       }
     },
+    async addPlayListCategory(category_id,video_id){
+       try {
+        const response = await axios.post(
+          `${process.env.VUE_APP_BACKEND}/playlist/${video_id}`,
+          { category_id },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          }
+        );
+        console.log(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
   },
 };
 </script>

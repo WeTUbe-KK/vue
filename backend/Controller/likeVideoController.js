@@ -26,7 +26,7 @@ exports.like = (req, res) => {
       res.status(200).json(video);
     })
     .catch((err) => {
-      console.log(err);
+      res.status(400).json({ error: err });
     });
 };
 
@@ -54,6 +54,6 @@ exports.dislike = (req, res) => {
       res.status(200).json(video);
     })
     .catch((err) => {
-      console.log(err);
+      res.status(400).json({ error: err });
     });
 };

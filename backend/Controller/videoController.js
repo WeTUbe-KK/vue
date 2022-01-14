@@ -69,10 +69,10 @@ exports.findOne = (id) => {
 exports.view = async (id) => {
   Video.increment({ view: +1 }, { where: { id } })
     .then(async () => {
-      res.status(200).json({ data: "success" });
+      return ({ data: "success" });
     })
     .catch((err) => {
-      res.status(400).json({ error: err });
+      return { error: err };
     });
 };
 
@@ -98,35 +98,38 @@ exports.getById = (req, res) => {
       {
         model: Comment,
         as: "Comment",
-        include: [{ model: likeComment, as: "likeComment" }],
+        include: [{ model: likeComment, as: "likeComment" }, { model: User, as: "User" }],
       },
       { model: likeVideo, as: "likeVideo" },
+      { model: User, as: "User" },
     ],
   })
     .then(async (data) => {
       const { likeVideo, Comment, ...videoData } = data.dataValues;
+      let countLikeComment = 0;
+      let countDislikeComment = 0;
+      let countLike = 0;
+      let countDislike = 0;
       const result = Comment.reduce((acc, curr) => {
         const likeComment = curr.dataValues.likeComment.reduce(
           (acc1, curr1) => {
-            let countLike = 0;
-            let countDislike = 0;
             if (curr1.dataValues.status_like) {
-              countLike = countLike + 1;
+              countLikeComment = countLikeComment + 1;
             } else {
-              countDislike = countDislike + 1;
+              countDislikeComment = countDislikeComment + 1;
             }
-            return { countLike, countDislike };
+            return { countLikeComment, countDislikeComment };
           },
           []
         );
-        curr.dataValues.likeComment = likeComment.countLike;
-        curr.dataValues.dislikeComment = likeComment.countDislike;
+        curr.dataValues.likeComment = likeComment.countLikeComment || 0;
+        curr.dataValues.dislikeComment = likeComment.countDislikeComment || 0;
         acc.push(curr.dataValues);
+        countLikeComment = 0
+        countDislikeComment = 0
         return acc;
       }, []);
       const likeVideoCount = likeVideo.reduce((acc, curr) => {
-        let countLike = 0;
-        let countDislike = 0;
         if (curr.dataValues.status_like) {
           countLike = countLike + 1;
         } else {
@@ -135,8 +138,8 @@ exports.getById = (req, res) => {
         return { countLike, countDislike };
       }, []);
       videoData.comment = result;
-      videoData.likeVideo = likeVideoCount.countLike;
-      videoData.dislikeVideo = likeVideoCount.countDislike;
+      videoData.likeVideo = likeVideoCount.countLike || 0;
+      videoData.dislikeVideo = likeVideoCount.countDislike || 0;
       res.status(200).json({ data: videoData });
     })
     .catch((err) => {

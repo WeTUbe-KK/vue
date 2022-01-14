@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="navbar_right flex">
-        <div class="btn btn-outline-danger" v-on:click="signout()">
+        <div v-if="authenticate" class="btn btn-outline-danger" v-on:click="signout()">
           <p class="m-0">Sign Out</p>
         </div>
       </div>
@@ -20,11 +20,16 @@
 
 <script lang="ts">
 export default {
-    methods : {
-    signout() {
-      localStorage.removeItem("user-token");
-      this.$router.push("/");
-    },
+  data(){
+    return {
+      authenticate : localStorage.getItem('user-token') || false
     }
+  },
+    methods : {
+      signout() {
+        localStorage.removeItem("user-token");
+        this.$router.push("/");
+      },
+  }
 }
 </script>

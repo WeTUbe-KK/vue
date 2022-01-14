@@ -1,22 +1,29 @@
 const User = require("../Model/user");
+const Video = require("../Model/video");
 const watchLater = require("../Model/watchLater");
 const { isAuth } = require("../Util/isAuth");
 
 exports.add = (req, res) => {
-  console.log(req.headers);
   const { user_id } = isAuth((context = { req }));
-  const watchLaterData = {
-    user_id,
-    video_id: req.params.id,
-  };
-  watchLater
-    .create(watchLaterData)
-    .then((data) => {
-      res.status(200).json(data);
-    })
-    .catch((error) => {
-      res.status(400).json({ error });
-    });
+  watchLater.findOne({ where: { user_id, video_id: req.params.id } })
+    .then(async data => {
+      const videoResponse = await Video.findOne({ where: { id: req.params.id, user_id } })
+      if (!data && !videoResponse) {
+        const watchLaterData = {
+          user_id,
+          video_id: req.params.id,
+        };
+        watchLater
+          .create(watchLaterData)
+          .then((data) => {
+            res.status(200).json(data);
+          })
+          .catch((error) => {
+            res.status(400).json({ error });
+          });
+      }
+      res.status(200).json({ data: "success" })
+    }).catch(err => res.status(400).json({ error: err }))
 };
 
 exports.remove = (req, res) => {

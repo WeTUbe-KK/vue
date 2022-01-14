@@ -235,7 +235,8 @@
         >
           <h4 style="margin: 0 1.5%">{{ index + 1 }}</h4>
           <div class="video">
-            <img class="mx-auto w-100 h-100" :src="getPlayListUrl(item)" />
+            <router-link v-if="item.Video" class="mx-auto my-2" :to="{ path: '/video/' + item.Video.id }"><img class="mx-auto w-100 h-100" :src="getPlayListUrl(item)" /></router-link>
+            <router-link v-else class="mx-auto my-2" :to="{ path: '/video/' + item.id }"><img class="mx-auto w-100 h-100" :src="getPlayListUrl(item)" /></router-link>
           </div>
           <div v-if="item.Video" class="d-flex ms-2 flex-column">
             <p>{{ item.Video.name }}</p>

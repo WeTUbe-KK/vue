@@ -1,31 +1,27 @@
 <template>
   <div>
-    <!-- <nav class="flex">
-      <div class="navbar_left flex">
-        <img src="../assets/photo/dark_mode/menu_icon.png" alt="menu _icon" class="menu_icon" />
-        <h3>WeTube</h3>
-      </div>
-      <div class="navbar_middle flex">
-        <div class="search-box flex">
-          <input type="text" placeholder="search" />
-          <img src="../assets/photo/dark_mode/search_icon.png" alt="search_icon" />
-        </div>
-      </div>
-      <div class="navbar_right flex"></div>
-    </nav> -->
     <navbar></navbar>
-    <div class="container play">
+    <div v-if="video.length != 0" class="container play">
       <div class="row">
         <div class="play_video">
-          <video ref="videoRef" src="" controls autoplay></video>
+          <video :src="getVideoUrl(video)" controls autoplay></video>
           <h3>{{ video.name }}</h3>
           <div class="play_info">
             <p>Views : {{ video.view }}</p>
-            <div>
-              <a href="#"><img src="../assets/photo/white_mode/like_icon.png" alt="like" />Like</a>
-              <a href="#"><img src="../assets/photo/white_mode/dislike_icon.png" alt="dislike" />Dislike</a>
-              <a href="#"><img src="../assets/photo/white_mode/share_icon.png" alt="share" />Share</a>
-              <a href="#"><img src="../assets/photo/white_mode/list_plus_icon_175099.png" alt="save" />Save</a>
+            <div class="d-flex w-25" v-if="authenticate">
+              <button class="btn"><img class="w-100" src="../assets/photo/white_mode/like_icon.png" alt="like" v-on:click="likeVideo()" /></button>
+              <p class="d-flex align-items-center p-0 m-0">{{ video.likeVideo }}</p>
+              <button class="btn p-0"><img class="w-50 mt-2" src="../assets/photo/white_mode/dislike_icon.png" alt="dislike" v-on:click="dislikeVideo()"/></button>
+              <p class="d-flex align-items-center p-0 m-0">{{ video.dislikeVideo }}</p>
+              <!-- <a href="#"><img src="../assets/photo/white_mode/share_icon.png" alt="share" />Share</a> -->
+              <button class="btn"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="w-100" src="../assets/photo/white_mode/list_plus_icon_175099.png" alt="save" />
+                <div class="dropdown-menu" v-if="playListData.length > 0" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item m-0"  v-for="play_list in playListData" :key="play_list.id" v-on:click="addPlayListCategory(play_list.id)">{{ play_list.name }}</a>
+                </div>
+                <div class="dropdown-menu" v-else aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item m-0" >No Playlist</a>
+                </div>
+              </button>
             </div>
           </div>
           <hr />
@@ -33,32 +29,32 @@
           <div class="publisher">
             <!-- profile user -->
             <div>
-              <p>{{ video.name }}</p>
+              <p>{{ video.User.username }}</p>
               <span>jumlah subscribes</span>
             </div>
-            <button type="button">Subscribe</button>
+            <button v-if="authenticate" type="button">Subscribe</button>
           </div>
           <div class="description">
             <p>{{ video.description }}</p>
             <hr />
-            <h4>Comments :{{ video.comment.length }}</h4>
-            <div class="add_comment">
+            <h4>Comments : {{ video.comment.length }}</h4>
+            <form v-if="authenticate" method="post" @submit.prevent="comment" class="add_comment">
               <!-- gambar user -->
-              <input type="text" placeholder="write comments" />
-            </div>
+              <input type="text" v-model="description" placeholder="Comments..." />
+            </form>
 
-            <div class="other_comment">
+            <div class="other_comment" v-for="items in video.comment" :key="items.id">
               <!-- gambar user lain -->
               <div>
-                <h3>nama user lain <span>lama post</span></h3>
-                <p>isi comment</p>
-                <div class="comment_action">
-                  <img src="../assets/photo/white_mode/like_icon.png" />
-                  <span>Like</span>
-                  <img src="../assets/photo/white_mode/dislike_icon.png" />
-                  <span>Dislike</span>
-                  <span>replay</span>
-                  <a href="">all replies</a>
+                <h3>{{ items.User.username}}<span>{{ getDate(items.createdAt) }}</span></h3>
+                <p>{{ items.description }}</p>
+                <div v-if="authenticate" class="comment_action">
+                  <button class="btn p-0"><img style="width:21.5px" src="../assets/photo/white_mode/like_icon.png" alt="dislike" v-on:click="likeComment(items.id)"/></button>
+                  <p class="d-flex align-items-center p-0 m-0">{{ items.likeComment }}</p>
+                  <button class="btn p-0"><img class="ms-2 mt-2" src="../assets/photo/white_mode/dislike_icon.png" alt="dislike" v-on:click="dislikeComment(items.id)"/></button>
+                  <p class="d-flex align-items-center p-0 m-0">{{ items.dislikeComment }}</p>
+                  <!-- <span>replay</span>
+                  <a href="">all replies</a> -->
                 </div>
               </div>
             </div>
@@ -76,6 +72,7 @@
 
 <script>
 import axios from "axios";
+import moment from "moment"
 import navbar from "./navbar.vue";
 
 export default {
@@ -85,24 +82,145 @@ export default {
     return {
       video: [],
       id: this.$route.params.id,
+      playListData: [],
+      description : "",
+      authenticate : localStorage.getItem('user-token') || null
     };
   },
-  created() {
+  created: function() {
     this.getVideo();
   },
+  watch:{
+    video: {
+      handler : function () {
+        console.log('success')
+      },
+      deep: true
+    }
+  },
   methods: {
+    getDate(date){
+      return moment(date).format('MMMM Do YYYY, h:mm:ss a')
+    },
     async getVideo() {
       try {
-        const response = await axios.get(`${process.env.VUE_APP_BACKEND}/video/${this.id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("user-token")}`,
-          },
-        });
+        const response = await axios.get(`${process.env.VUE_APP_BACKEND}/video/${this.id}`);
         this.video = response.data.data;
-        const path = this.video.path.split("/");
-        path.splice(6, 0, "c_scale,c_pad,h_200,w_400");
-        this.$refs.videoRef.src = path.join("/");
-        this.$refs.videoRef.play();
+        if(localStorage.getItem('user-token')){
+          await axios.post(`${process.env.VUE_APP_BACKEND}/history/${this.id}`,{}, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          });
+          const response1 = await axios.get(`${process.env.VUE_APP_BACKEND}/user`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          });
+          this.playListData = response1.data.data.playListCategory
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    getVideoUrl(vid){
+      const video = vid.path.split("/");
+      video.splice(6, 0, 'c_scale,c_pad,h_200,w_400');
+      return video.join("/");
+    },
+    async addPlayListCategory(category_id){
+       try {
+        await axios.post(
+          `${process.env.VUE_APP_BACKEND}/playlist/${this.id}`,
+          { category_id },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          }
+        );
+        
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async likeVideo(){
+      try {
+        await axios.put(
+          `${process.env.VUE_APP_BACKEND}/video/like/${this.id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          }
+        );
+        this.getVideo()
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async dislikeVideo(){
+       try {
+        await axios.put(
+          `${process.env.VUE_APP_BACKEND}/video/dislike/${this.id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          }
+        );
+        this.getVideo()
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async likeComment(comment_id){
+      try {
+        await axios.put(
+          `${process.env.VUE_APP_BACKEND}/comment/like/${this.id}`,
+          { comment_id },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          }
+        );
+        this.getVideo()
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async dislikeComment(comment_id){
+       try {
+        await axios.put(
+          `${process.env.VUE_APP_BACKEND}/comment/dislike/${this.id}`,
+          { comment_id },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          }
+        );
+        this.getVideo()
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async comment() {
+      try {
+        await axios.post(
+          `${process.env.VUE_APP_BACKEND}/comment/${this.id}`,
+          { description: this.description },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          }
+        );
+        this.description = ""
+        this.getVideo()
       } catch (err) {
         console.log(err);
       }
