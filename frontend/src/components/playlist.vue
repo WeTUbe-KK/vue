@@ -98,7 +98,7 @@
 
     <!-- ------tempat taruh video------- -->
 
-    <div class="menuPlaylist">
+    <div class="menuAdd">
       <div class="profile">
         <div class="logou" style="text-align: center">
           <h1
@@ -296,8 +296,9 @@ export default {
           }
         );
         this.video = response.data.data;
+        console.log(this.video)
         this.uploaded = response1.data.data;
-        console.log(response1.data.data);
+        // console.log(response1.data.data);
         if (this.uploaded.length > 0) {
           this.uploadedVideo = this.uploaded[0];
         }

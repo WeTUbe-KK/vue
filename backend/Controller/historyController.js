@@ -1,7 +1,7 @@
 const history = require("../Model/history");
 const { isAuth } = require("../Util/isAuth");
+const Video = require("../Model/video");
 const videoController = require("../Controller/videoController")
-const Video = require('../Model/video');
 const User = require("../Model/user");
 
 exports.add = (req, res) => {

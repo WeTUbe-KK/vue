@@ -55,31 +55,25 @@
         <div class="subscriptions">
             <h6>Subscriptions</h6>
         </div>
-    </div> -->
+    </div>
 
-    <!-- ------tempat taruh video------- -->
 
-    <div class="container">
-      <div class="list">
-        <div class="video_list" v-for="item in video" :key="item.id">
-          <a href="">
-            <!-- gambar thumbnail -->
-            <div class="flex">
-              <!-- gambar user -->
-              <div class="video_info">
-                <p></p>
-                <!--judul-->
-                <p></p>
-                <!--user-->
-                <p></p>
-                <!--view-->
-              </div>
+tempat taruh video------- -->
+    <div class="menuAdd flex-column bg-dark min-vh-100">
+        <div class="mx-auto mt-3 title"><p style="font-family: 'The Nautigal', cursive; font-weight: bold; background: linear-gradient(to right, purple, red, yellow);  -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Your Watch Later List</p></div>
+        <hr class="hrWatchLater mx-auto p-0" style="height: 2px; background: linear-gradient(to right, yellow, white, lightblue, aqua, purple); opacity: 1;">        
+        <div style="display: grid;" class="mx-5 gridWH"> 
+          <div v-for="(item) in video" :key="item.id" class="wrapper text-light my-3" style="display: flex;">
+            <div class="widthVideo"><img class="mx-auto w-100" style="height: 170px;" :src="getImgUrl(item)" /></div>
+            <div class="videoInfo mx-2">
+              <p style="font-size: 20px; color: orange;">{{ item.Video.name }}</p>
+              <p>{{ item.Video.User.username }}</p>
+              <small>{{ item.Video.description }}</small>
             </div>
-          </a>
+          </div>     
         </div>
       </div>
     </div>
-  </div>
 </template>
 <script>
 import axios from "axios";
@@ -97,21 +91,31 @@ export default {
   created() {
     this.getVideo();
   },
-  /*
-  mounted() {
-    let mainScript = document.createElement('script')
-    mainScript.setAttribute('src', '../assets/main2.js')
-    document.head.appendChild(mainScript)
-  },
-  */
   methods: {
     async getVideo() {
       try {
-        const response = await axios.put(`http://localhost:3000/video`);
-        this.video = response.data.response;
+        const response = await axios.get(
+          `${process.env.VUE_APP_BACKEND}/watchLater`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          }
+        );
+        this.video = response.data.data;
+        console.log(this.video);
       } catch (err) {
         console.log(err);
       }
+    },
+    getImgUrl(pic) {
+      const image = pic.Video.path.split("/");
+      image.splice(6, 0, "w_200,h_200,c_scale");
+      return image.join("/").slice(0, -4) + ".jpg";
+    },
+    signOut() {
+      localStorage.removeItem("user-token");
+      this.$router.push("/");
     },
     on() {
       document.getElementById("overlay").style.display = "block";
@@ -128,6 +132,31 @@ export default {
       document.getElementById("overlay1").style.display = "none";
       document.getElementById("overlay2").style.display = "none";
     },
+    // listVideo(item) {
+    //   if (item.playList.length == 0) {
+    //     this.playlist = [];
+    //   } else {
+    //     this.playlist = item.playList;
+    //   }
+    // },
+    // listUploadedVideo(item) {
+    //   if (item.length == 0) {
+    //     this.playlist = [];
+    //   } else {
+    //     this.playlist = item;
+    //   }
+    // },
+    // getWatchLaterUrl(item) {
+    //   if (item.path) {
+    //     const image = item.path.split("/");
+    //     image.splice(6, 0, "w_200,h_200,c_scale");
+    //     return image.join("/").slice(0, -4) + ".jpg";
+    //   } else {
+    //     const image = item.Video.path.split("/");
+    //     image.splice(6, 0, "w_200,h_200,c_scale");
+    //     return image.join("/").slice(0, -4) + ".jpg";
+    //   }
+    // },
   },
 };
 </script>

@@ -4,7 +4,6 @@
     padding : 0;
     box-sizing : border-box;
 }
-
 a{
     text-decoration : none;
     color : white
@@ -614,7 +613,7 @@ input[type='submit']{
     padding : 25px;
 }
 
-.menuPlaylist{
+.menuAdd{
     margin-left: 15%;
     display: flex;
 }
@@ -622,7 +621,7 @@ input[type='submit']{
 .profile{
     background-color: black;
     width: 30%;
-    height: 150vh;
+    padding-bottom: 8%;
 }
 
 .logou{
@@ -665,12 +664,6 @@ input[type='submit']{
     margin: 10% 0;
 }
 
-.video{
-    width: 25%;
-    height: 140px;
-    background-color: white;
-}
-
 .listPhoto{
     width: 100%;
     background-color: white;
@@ -687,11 +680,34 @@ input[type='submit']{
     margin-left: 15%;
 }
 
+.title{
+    font-size: 90px;
+}
+.hrWatchLater{
+    width: 80%;
+}
+.hrH{
+    width: 20%; 
+}
+.gridWH{
+    grid-template-columns: 49% 49%;
+}
+.wrapper{
+    flex-direction: row;
+}
+.videoInfo{
+    font-size: 18px;
+    font-weight: bold;
+}
+.widthVideo{
+    width: 45%;
+}
+
 @media (max-width: 900px) {
     body{
         background-color: black;
     }
-    .menuPlaylist{
+    .menuAdd{
         margin-left: 0%;
         flex-direction: column;
     }
@@ -726,11 +742,11 @@ input[type='submit']{
     .lists-videos{
         display: none;
     }
-    .video{
+    /* .video{
         width: 45%;
         height: 140px;
         background-color: white;
-    }
+    } */
     .videos h4, h5{
         color: white;
     }
@@ -740,8 +756,32 @@ input[type='submit']{
     .addplaylist{
         margin-left: 0%;
         height: 100vh;
-    }        
-}
+    }      
+    .title{
+        font-size: 50px;
+        font-weight: bold;
+    }
+    .hrWatchLater{
+        width: 60%;
+    }
+    .gridWH{
+        grid-template-columns: 100% ;
+    }
+    .wrapper{
+        flex-direction: column;        
+    }
+    .hrH{
+        width: 50%; 
+    }
+    .widthVideo{
+        width: 75%;   
+        margin: 0 auto;     
+    }
+    .videoInfo{
+        text-align: center;
+    }
+}   
+
 
 .bodys{
     background : #bababa !important

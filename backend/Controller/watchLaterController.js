@@ -32,6 +32,7 @@ exports.remove = (req, res) => {
     .findOne({
       where: {
         id: req.params.id,
+        video_id: req.params.id,
       },
     })
     .then(async (data) => {

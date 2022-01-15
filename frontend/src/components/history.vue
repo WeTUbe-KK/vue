@@ -37,7 +37,7 @@
 
     <sidebar></sidebar>
 
-    <!-- <div class="sidebar">
+    <div class="sidebar">
         <div class="shortcut">
             <a href="#"><img src="../assets/photo/dark_mode/home_icon.png" alt="home"><p>Home</p></a>
             <router-link :to="{ name: ['explore'] }"><img src="../assets/photo/white_mode/explore_icon.png" alt="Explore"><p>Explore</p></router-link>
@@ -55,30 +55,23 @@
         <div class="subscriptions">
             <h6>Subscriptions</h6>
         </div>
-    </div> -->
+    </div>
 
-    <!-- ------tempat taruh video------- -->
-
-    <div class="container">
-      <div class="list">
-        <div class="video_list" v-for="item in video" :key="item.id">
-          <a href="">
-            <!-- gambar thumbnail -->
-            <div class="flex">
-              <!-- gambar user -->
-              <div class="video_info">
-                <p></p>
-                <!--judul-->
-                <p></p>
-                <!--user-->
-                <p></p>
-                <!--view-->
-              </div>
-            </div>
-          </a>
-        </div>
+    <div class="menuAdd flex-column bg-dark min-vh-100">
+      <div class="mx-auto mt-3 title"><p style="font-family: 'The Nautigal', cursive; font-weight: bold; background: linear-gradient(to right, #ee9ca7, #ffdde1);  -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Your History</p></div>
+      <hr class="hrWatchLater mx-auto p-0" style="height: 2px; background: linear-gradient(to right, white, aqua); opacity: 1;">        
+      <div style="display: grid;" class="mx-5 gridWH"> 
+        <div v-for="(item) in video" :key="item.id" class="wrapper text-light my-3" style="display: flex;">
+          <div class="widthVideo"><img class="mx-auto w-100" style="height: 170px;" :src="getImgUrl(item)" /></div>
+          <div class="videoInfo mx-2">
+            <p style="font-size: 20px; color: orange;">{{ item.Video.name }}</p>
+            <p>{{ item.Video.User.username}}</p>
+            <small>{{ item.Video.description }}</small>
+          </div>
+        </div>     
       </div>
     </div>
+
   </div>
 </template>
 <script>
@@ -97,21 +90,31 @@ export default {
   created() {
     this.getVideo();
   },
-  /*
-  mounted() {
-    let mainScript = document.createElement('script')
-    mainScript.setAttribute('src', '../assets/main2.js')
-    document.head.appendChild(mainScript)
-  },
-  */
   methods: {
     async getVideo() {
       try {
-        const response = await axios.put(`http://localhost:3000/video`);
-        this.video = response.data.response;
+        const response = await axios.get(
+          `${process.env.VUE_APP_BACKEND}/history`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          }
+        );
+        this.video = response.data.data;
+        console.log(this.video);
       } catch (err) {
         console.log(err);
       }
+    },
+    getImgUrl(pic) {
+      const image = pic.Video.path.split("/");
+      image.splice(6, 0, "w_200,h_200,c_scale");
+      return image.join("/").slice(0, -4) + ".jpg";
+    },
+    signOut() {
+      localStorage.removeItem("user-token");
+      this.$router.push("/");
     },
     on() {
       document.getElementById("overlay").style.display = "block";
