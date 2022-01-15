@@ -1,7 +1,8 @@
 const history = require("../Model/history");
 const { isAuth } = require("../Util/isAuth");
 const videoController = require("../Controller/videoController")
-const Video = require('../Model/video')
+const Video = require('../Model/video');
+const User = require("../Model/user");
 
 exports.add = (req, res) => {
   const { user_id } = isAuth((context = { req }));
@@ -53,7 +54,7 @@ exports.remove = (req, res) => {
 
 exports.index = (req, res) => {
   const { user_id } = isAuth((context = { req }));
-  return history.findAll({ where: { user_id }, include: [{ model: Video, as: "Video" }] })
+  return history.findAll({ where: { user_id }, include: [{ model: Video, as: "Video", include: [{ model: User, as: "User" }] }] })
     .then((data) => {
       const result = data.reduce((acc, curr) => {
         acc.push(curr.dataValues);
