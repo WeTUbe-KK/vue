@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="overlay">
+    <!-- <div id="overlay">
       <div id="form_input_video">
         <img
           src="../assets/photo/white_mode/close_icon.png"
@@ -21,7 +21,7 @@
         <h3>thumbnail</h3>
         <input type="file" id="myFile" name="filename" />
       </div>
-    </div>
+    </div> -->
 
     <div id="overlay1">
       <div id="form_input_video">
@@ -44,12 +44,12 @@
           <!-- <div class="pass">Forget Password ?</div> -->
           <!-- <button type="submit">Login</button> -->
           <button type="submit" class="btn btn-sm btn-light">Login</button>
-          <div class="sign_up" v-on:click="onnn()">Create Account</div>
+          <router-link class="d-block sign_up" to="/signup">Create Account</router-link>
         </form>
       </div>
     </div>
 
-    <div id="overlay2" class="mt-5">
+    <!-- <div id="overlay2" class="mt-5">
       <div id="form_input_video">
         <img
           src="../assets/photo/white_mode/close_icon.png"
@@ -97,7 +97,7 @@
           <button type="submit" class="btn btn-sm btn-light">Register</button>
         </form>
       </div>
-    </div>
+    </div> -->
 
     <nav class="flex">
       <div class="navbar_left flex">
@@ -123,6 +123,8 @@
         </div>
       </div>
     </nav>
+
+    <sidebar></sidebar>
 
     <!-- <div class="sidebar">
       <div class="shortcut">
@@ -200,23 +202,18 @@
 <script>
 import axios from "axios";
 import listVideo from './listVideo.vue';
+import sidebar from './sidebar.vue';
 
 export default {
   name: "main_no_sign_in",
-  components: { "list-video":listVideo },
+  components: { "list-video":listVideo, sidebar },
   data() {
     return {
       video: [],
-      email: "",
       password: "",
       username: "",
-      confirm_password: "",
-      birthday: "",
-      gender: "",
       errorMessage:"",
       error:false,
-      errorRegisterMessage: "",
-      errorRegister: false
     };
   },
   beforeMount(){
@@ -239,29 +236,6 @@ export default {
       } catch (err) {
         this.error = true
         this.errorMessage = err.response.data.error
-      }
-    },
-    async register() {
-      try {
-        await axios.post(`${process.env.VUE_APP_BACKEND}/register`, {
-          email: this.email,
-          username: this.username,
-          gender: this.gender,
-          password: this.password,
-          confirm_password: this.confirm_password,
-          birthday: this.birthday,
-        });
-        this.email = "";
-        this.username = "";
-        this.gender = "";
-        this.password = "";
-        this.confirm_password = "";
-        this.birthday = "";
-        this.off();
-        this.onn();
-      } catch (err) {
-        this.errorRegister = true
-        this.errorRegsiterMessage = err.response.data.error
       }
     },
     on() {

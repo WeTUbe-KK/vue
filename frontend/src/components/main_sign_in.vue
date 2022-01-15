@@ -110,7 +110,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import sidebar from "./sidebar.vue";
 import navbar from "./navbar.vue";
 import listVideo from "./listVideo.vue"
@@ -121,17 +120,6 @@ export default {
     sidebar,
     navbar,
     "list-video" : listVideo
-  },
-  data() {
-    return {
-      video: [],
-      title: "",
-      description: "",
-      Video: "",
-      formData: "",
-      loading: false,
-      disabled: false,
-    };
   },
   // created() {
   //   this.getVideo();
@@ -144,34 +132,6 @@ export default {
   },
   */
   methods: {
-    uploadFile() {
-      this.Video = this.$refs.file.files[0];
-      this.formData = new FormData();
-      this.formData.append("video", this.Video);
-    },
-    async upload() {
-      try {
-        this.formData.append("name", this.title);
-        this.formData.append("description", this.description);
-        this.loading = true;
-        this.disabled = true;
-        await axios.post(`${process.env.VUE_APP_BACKEND}/video/upload`, this.formData, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("user-token")}`,
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        this.title = "";
-        this.description = "";
-        this.loading = false;
-        this.disabled = false;
-        this.$router.push("/home");
-      } catch (err) {
-        this.loading = false;
-        this.disabled = false;
-        console.log(err);
-      }
-    },
     // async getVideo() {
     //   try {
     //     const response = await axios.get(`${process.env.VUE_APP_BACKEND}/video`, {

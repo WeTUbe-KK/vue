@@ -13,7 +13,8 @@ import Watch_later from "./components/watch_later.vue";
 import playlist from "./components/playlist.vue";
 import addPlaylist from "./components/addPlaylist.vue";
 import videoPlayer from "./components/videoPlayer.vue";
-import create_account from "./create_accout.vue"
+import createAccount from "./components/create_accout.vue"
+import Upload from "./components/upload.vue"
 
 Vue.use(VueRouter);
 
@@ -38,6 +39,16 @@ const routes = [
     name: "Index",
     path: "/",
     component: Index,
+  },
+  {
+    name: "videoPlayer",
+    path: "/video/:id",
+    component: videoPlayer
+  },
+  {
+    name: "createAccount",
+    path: "/signup",
+    component: createAccount
   },
   {
     name: "IndexUser",
@@ -94,14 +105,10 @@ const routes = [
     beforeEnter: ifAuthenticated,
   },
   {
-    name: "videoPlayer",
-    path: "/video/:id",
-    component: videoPlayer
-  },
-  {
-    name:"create_account",
-    path:"/sign_up",
-    component: create_account
+    name: "Upload",
+    path: "/upload",
+    component: Upload,
+    beforeEnter: ifAuthenticated,
   }
 ];
 

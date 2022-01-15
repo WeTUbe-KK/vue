@@ -1,4 +1,5 @@
 <template>
+<div>
   <navbar></navbar>
   <!-- <nav class="flex">
       <div class="navbar_left flex">
@@ -63,63 +64,76 @@
         <h6>Subscriptions</h6>
       </div>
     </div> -->
-    <div>
-    <div class="container create_acc">
-      <a class="link" href=""><img src="/close_icon.png"></a>
-        <form>
-          <h1 class="judul">Create WeTube Account</h1>
-            <div class="row">
-                <label for="exampleInputEmail1">Name</label>
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="First name">
-                </div>
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="Last name">
-                </div>
+      <div>
+        <div class="container upload mt-5">
+          <h1>Upload Video</h1>
+            <form method="post" @submit.prevent="upload" enctype="multipart/form-data">
+            <div class="drag-area">
+              <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                <header>Drag & Drop to Upload File</header>
+                <span>OR</span>
+                <input class="ms-5" type="file" @change="uploadFile" ref="file" :disabled="disabled">
               </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+
+              <h3 class="h3_upload">Title</h3>
+              <textarea class="textarea_upload" v-model="title" :disabled="disabled"></textarea>
+              <h3>Description</h3>
+              <textarea class="textarea_upload" v-model="description" :disabled="disabled"></textarea>
+              <div class="spinner-border d-block my-2" role="status" v-if="loading">
+                <span class="sr-only"></span>
+              </div>
+              <button type="submit" class="btn btn-primary tombol_upload" :disabled="disabled">Upload</button>
+            </form>
             </div>
-            
-            <div class="row">
-              <div class="col">
-                <label for="inputState">Gender</label>
-                <select id="inputState" class="form-control">
-                  <option selected></option>
-                  <option>Male</option>
-                  <option>Female</option>
-                </select>
-              </div>
-              <div class="col">
-                <label for="inputState">Birthday</label>
-                <input type="text" class="form-control" placeholder="Last name">
-              </div>
-            </div>
-
-              <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-              </div>
-
-              <div class="form-group">
-                <label for="exampleInputPassword1">Confirm Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Confirm Password">
-              </div>
-
-
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1">
-              <label class="form-check-label" for="exampleCheck1">I agree all statement in <a href="">Terms of service</a></label>
-            </div>
-            <button class="tombol_create_acc" type="submit" class="btn btn-primary">Create Account</button>
-            <p>Your already have account? <a href="">Login here</a></p>
-          </form>
-    </div>
-    </div>
+        </div>
+      </div>
 </template>
 <script>
 import axios from "axios";
 import sidebar from "./sidebar.vue";
 import navbar from "./navbar.vue";
+export default {
+  components: {sidebar,navbar},
+  data(){
+    return {
+      video: [],
+      title: "",
+      description: "",
+      formData: "",
+      Video: "",
+      loading: false,
+      disabled: false,
+    }
+  },
+  methods: {
+    uploadFile() {
+      this.Video = this.$refs.file.files[0];
+      this.formData = new FormData();
+      this.formData.append("video", this.Video);
+    },
+    async upload() {
+      try {
+        this.formData.append("name", this.title);
+        this.formData.append("description", this.description);
+        this.loading = true;
+        this.disabled = true;
+        await axios.post(`${process.env.VUE_APP_BACKEND}/video/upload`, this.formData, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        this.title = "";
+        this.description = "";
+        this.loading = false;
+        this.disabled = false;
+        this.$router.push("/home");
+      } catch (err) {
+        this.loading = false;
+        this.disabled = false;
+        console.log(err);
+      }
+    }
+  }
+}
 </script>

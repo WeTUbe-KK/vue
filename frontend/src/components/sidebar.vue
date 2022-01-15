@@ -18,7 +18,7 @@
           ><img src="../assets/photo/white_mode/library_icon.jpg" alt="library" />
           <p>Library</p></router-link
         >
-        <a href="#" v-on:click="on()"><img src="../assets/photo/white_mode/upload_icon.png" alt="upload" />Upload</a>
+        <router-link :to="{name:['Upload']}"><img src="../assets/photo/white_mode/upload_icon.png" alt="upload" />Upload</router-link>
         <router-link :to="{ name: ['history'] }"
           ><img src="../assets/photo/dark_mode/history_icon.png" alt="history" />
           <p>History</p></router-link

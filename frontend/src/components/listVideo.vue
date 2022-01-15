@@ -1,5 +1,12 @@
 <template>
   <div class="container">
+    <div class="navbar_middle flex mb-5 ms-5">
+      <div class="search-box flex">
+        <form method="post" @submit.prevent="search">
+          <input type="text" placeholder="search" v-model="name"/>
+        </form>
+      </div>
+    </div>
     <div class="video_list" v-for="item in video" :key="item.id">
       <div class="card me-5">
         <router-link class="mx-auto my-2" :to="{ path: '/video/' + item.id }"><img :src="getImgUrl(item.path)" /></router-link>
@@ -37,11 +44,20 @@ export default {
     return {
       video: [],
       authenticate: localStorage.getItem("user-token") || false,
-      playListData: []
+      playListData: [],
+      name : ''
     };
   },
   created() {
     this.getVideo();
+  },
+  watch:{
+    video: {
+      handler : function () {
+        console.log('success')
+      },
+      deep: true
+    }
   },
   methods: {
     async getVideo() {
@@ -58,6 +74,21 @@ export default {
           },
         });
         this.playListData = response1.data.data.playListCategory
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async search(){
+      console.log(this.name)
+      try {
+        const response = await axios.post(`${process.env.VUE_APP_BACKEND}/video/search`, {name:this.name});
+        this.video = response.data.data;
+        const response1 = await axios.get(`${process.env.VUE_APP_BACKEND}/user`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+          },
+        });
+        this.playListData = response1.data.data.playListCategory;
       } catch (err) {
         console.log(err);
       }

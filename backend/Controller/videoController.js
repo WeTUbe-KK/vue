@@ -5,6 +5,8 @@ const likeComment = require("../Model/likeComment");
 const Comment = require("../Model/comment");
 const likeVideo = require("../Model/likeVideo");
 const User = require("../Model/user");
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op
 
 exports.upload = (req, res) => {
   const { user_id } = isAuth((context = { req }));
@@ -150,6 +152,16 @@ exports.getById = (req, res) => {
 exports.getUploadedVideo = (req, res) => {
   const { user_id } = isAuth((context = { req }));
   Video.findAll({ where: { user_id }, include: [{ model: User, as: "User" }] })
+    .then((data) => {
+      res.status(200).json({ data });
+    })
+    .catch((err) => {
+      res.status(400).json({ error: err });
+    });
+};
+
+exports.search = (req, res) => {
+  Video.findAll({ where: { name: {[Op.like] : `%${req.body.name}%`} }, include: [{ model: User, as: "User" }] })
     .then((data) => {
       res.status(200).json({ data });
     })
