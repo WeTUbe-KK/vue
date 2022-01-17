@@ -1,7 +1,7 @@
 <template>
   <div>
     <navbar></navbar>
-    <div v-if="video.length != 0" class="container play">
+    <div v-if="video.length != 0" class="container play" style="margin-top: 8%">
       <div class="row">
         <div class="play_video">
           <video :src="getVideoUrl(video)" controls autoplay></video>

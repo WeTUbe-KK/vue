@@ -109,13 +109,6 @@
         <h3>WeTube</h3>
       </div>
       <div class="navbar_middle flex">
-        <div class="search-box flex">
-          <input type="text" placeholder="search" />
-          <img
-            src="../assets/photo/dark_mode/search_icon.png"
-            alt="search_icon"
-          />
-        </div>
       </div>
       <div class="navbar_right flex">
         <div class="btn btn-outline-primary" v-on:click="onn()">
@@ -249,9 +242,9 @@ export default {
       document.getElementById("overlay2").style.display = "block";
     },
     off() {
-      document.getElementById("overlay").style.display = "none";
+      // document.getElementById("overlay").style.display = "none";
       document.getElementById("overlay1").style.display = "none";
-      document.getElementById("overlay2").style.display = "none";
+      // document.getElementById("overlay2").style.display = "none";
     },
   },
 };

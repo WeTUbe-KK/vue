@@ -15,8 +15,15 @@ import addPlaylist from "./components/addPlaylist.vue";
 import videoPlayer from "./components/videoPlayer.vue";
 import createAccount from "./components/create_accout.vue"
 import Upload from "./components/upload.vue"
+import VueToastify from "vue-toastify";
 
 Vue.use(VueRouter);
+Vue.use(VueToastify,{
+  position: "top-left",
+  errorDuration: 1000,
+  successDuration: 1000,
+  warningInfoDuration: 1000
+});
 
 Vue.config.productionTip = false;
 

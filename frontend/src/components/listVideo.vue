@@ -68,27 +68,30 @@ export default {
           },
         });
         this.video = response.data.data;
-        const response1 = await axios.get(`${process.env.VUE_APP_BACKEND}/user`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("user-token")}`,
-          },
-        });
-        this.playListData = response1.data.data.playListCategory
+        if(this.authenticate){
+          const response1 = await axios.get(`${process.env.VUE_APP_BACKEND}/user`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          });
+          this.playListData = response1.data.data.playListCategory
+        }
       } catch (err) {
         console.log(err);
       }
     },
     async search(){
-      console.log(this.name)
       try {
         const response = await axios.post(`${process.env.VUE_APP_BACKEND}/video/search`, {name:this.name});
         this.video = response.data.data;
-        const response1 = await axios.get(`${process.env.VUE_APP_BACKEND}/user`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("user-token")}`,
-          },
-        });
-        this.playListData = response1.data.data.playListCategory;
+        if(this.authenticate){
+          const response1 = await axios.get(`${process.env.VUE_APP_BACKEND}/user`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          });
+          this.playListData = response1.data.data.playListCategory
+        }
       } catch (err) {
         console.log(err);
       }
@@ -100,7 +103,7 @@ export default {
     },
     async addWatchLater(id) {
       try {
-        const response = await axios.post(
+        await axios.post(
           `${process.env.VUE_APP_BACKEND}/watchLater/${id}`,
           {},
           {
@@ -109,14 +112,14 @@ export default {
             },
           }
         );
-        console.log(response.data.data);
+        this.$vToastify.success("Added to Watch Later");
       } catch (err) {
         console.log(err);
       }
     },
     async addPlayListCategory(category_id,video_id){
        try {
-        const response = await axios.post(
+        await axios.post(
           `${process.env.VUE_APP_BACKEND}/playlist/${video_id}`,
           { category_id },
           {
@@ -125,7 +128,7 @@ export default {
             },
           }
         );
-        console.log(response.data);
+        this.$vToastify.success("Added to Playlist");
       } catch (err) {
         console.log(err);
       }

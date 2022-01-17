@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="overlay">
+    <!-- <div id="overlay">
       <div id="form_input_video">
         <img src="../assets/photo/white_mode/close_icon.png" v-on:click="off()" />
         <h3>Upload Video</h3>
@@ -17,8 +17,8 @@
         <textarea id="w3review" name="w3review" rows="5" cols="80"></textarea>
         <h3>thumbnail</h3>
         <input type="file" id="myFile" name="filename" />
-      </div>
-    </div>
+      </div> -->
+    <!-- </div> -->
 
     <!-- <nav class="flex">
         <div class="navbar_left flex">
@@ -59,12 +59,12 @@
 
 
 tempat taruh video------- -->
-    <div class="menuAdd flex-column bg-dark min-vh-100">
+    <div class="menuAdd flex-column bg-dark min-vh-100 mt-5">
         <div class="mx-auto mt-3 title"><p style="font-family: 'The Nautigal', cursive; font-weight: bold; background: linear-gradient(to right, purple, red, yellow);  -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Your Watch Later List</p></div>
         <hr class="hrWatchLater mx-auto p-0" style="height: 2px; background: linear-gradient(to right, yellow, white, lightblue, aqua, purple); opacity: 1;">        
         <div style="display: grid;" class="mx-5 gridWH"> 
           <div v-for="(item) in video" :key="item.id" class="wrapper text-light my-3" style="display: flex;">
-            <div class="widthVideo"><img class="mx-auto w-100" style="height: 170px;" :src="getImgUrl(item)" /></div>
+            <div class="widthVideo"><router-link :to="{ path: '/video/' + item.Video.id }"><img class="mx-auto w-100" style="height: 170px;" :src="getImgUrl(item)" /></router-link></div>
             <div class="videoInfo mx-2">
               <p style="font-size: 20px; color: orange;">{{ item.Video.name }}</p>
               <p>{{ item.Video.User.username }}</p>
@@ -103,7 +103,6 @@ export default {
           }
         );
         this.video = response.data.data;
-        console.log(this.video);
       } catch (err) {
         console.log(err);
       }

@@ -1,9 +1,9 @@
 <template>
-    <div class="sidebar">
+    <div v-if="authenticate" class="sidebar">
       <div class="shortcut">
-        <a href="/home"
+        <router-link :to="{ name: ['IndexUser'] }"
           ><img src="../assets/photo/dark_mode/home_icon.png" alt="home" />
-          <p>Home</p></a
+          <p>Home</p></router-link
         >
         <router-link :to="{ name: ['explore'] }"
           ><img src="../assets/photo/white_mode/explore_icon.png" alt="Explore" />
@@ -44,3 +44,12 @@
       </div>
     </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      authenticate: localStorage.getItem('user-token') || null
+    }
+  }
+}
+</script>

@@ -1,9 +1,11 @@
 <template>
-    <div>
+    <div class="fixed-top">
       <nav class="flex">
         <div class="navbar_left flex">
           <img src="../assets/photo/dark_mode/menu_icon.png" alt="menu_icon" class="menu_icon" />
-          <h3>WeTube</h3>
+          <router-link :to="{ name: ['IndexUser'] }">
+            <h3>WeTube</h3>
+          </router-link>
         </div>
         <div class="navbar_middle flex">
         </div>

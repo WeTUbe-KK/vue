@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="overlay">
+    <!-- <div id="overlay">
       <div id="form_input_video">
         <img src="../assets/photo/white_mode/close_icon.png" v-on:click="off()" />
         <h3>Upload Video</h3>
@@ -18,7 +18,7 @@
         <h3>thumbnail</h3>
         <input type="file" id="myFile" name="filename" />
       </div>
-    </div>
+    </div> -->
     <navbar></navbar>
 
     <!-- <nav class="flex">
@@ -37,32 +37,12 @@
 
     <sidebar></sidebar>
 
-    <div class="sidebar">
-        <div class="shortcut">
-            <a href="#"><img src="../assets/photo/dark_mode/home_icon.png" alt="home"><p>Home</p></a>
-            <router-link :to="{ name: ['explore'] }"><img src="../assets/photo/white_mode/explore_icon.png" alt="Explore"><p>Explore</p></router-link>
-            <router-link :to="{ name: ['subscription'] }"><img src="../assets/photo/white_mode/subscription_icon.png" alt="Subscription"><p>Subscription</p></router-link>
-            <hr>
-            <router-link :to="{ name: ['library'] }"><img src="../assets/photo/white_mode/library_icon.jpg" alt="library"><p>Library</p></router-link>
-            <a href="#" v-on:click="on()"><img src = "../assets/photo/white_mode/upload_icon.png" alt = "upload">Upload</a>
-            <router-link :to="{ name: ['history'] }"><img src="../assets/photo/dark_mode/history_icon.png" alt="history"><p>History</p></router-link>
-            <router-link :to="{ name: ['your_video'] }"><img src="../assets/photo/white_mode/your_video_icon.png" alt="Your Video"><p>Your Video</p></router-link>
-            <router-link :to="{ name: ['watch_later'] }"><img src="../assets/photo/white_mode/time_icon.png" alt="Watch Later"><p>Watch Later</p></router-link>
-            <router-link :to="{ name: ['playlist'] }"><img src="../assets/photo/white_mode/showmore_icon.png" alt="playlist"><p>Playlist</p></router-link>            
-            <hr>
-        </div>
-
-        <div class="subscriptions">
-            <h6>Subscriptions</h6>
-        </div>
-    </div>
-
-    <div class="menuAdd flex-column bg-dark min-vh-100">
+    <div class="menuAdd flex-column bg-dark min-vh-100 mt-5">
       <div class="mx-auto mt-3 title"><p style="font-family: 'The Nautigal', cursive; font-weight: bold; background: linear-gradient(to right, #ee9ca7, #ffdde1);  -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Your History</p></div>
       <hr class="hrWatchLater mx-auto p-0" style="height: 2px; background: linear-gradient(to right, white, aqua); opacity: 1;">        
       <div style="display: grid;" class="mx-5 gridWH"> 
         <div v-for="(item) in video" :key="item.id" class="wrapper text-light my-3" style="display: flex;">
-          <div class="widthVideo"><img class="mx-auto w-100" style="height: 170px;" :src="getImgUrl(item)" /></div>
+          <div class="widthVideo"><router-link :to="{ path: '/video/' + item.Video.id }"><img class="mx-auto w-100" style="height: 170px;" :src="getImgUrl(item)" /></router-link></div>
           <div class="videoInfo mx-2">
             <p style="font-size: 20px; color: orange;">{{ item.Video.name }}</p>
             <p>{{ item.Video.User.username}}</p>
