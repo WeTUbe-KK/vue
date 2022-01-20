@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="navbar_middle flex mb-5 ms-5">
+    <div class="navbar_middle flex mb-5 ms-5" v-bind:style="[authenticate ? {'margin-top' : '8%'} : {}]" >
       <div class="search-box flex">
         <form method="post" @submit.prevent="search">
           <input type="text" placeholder="search" v-model="name"/>
@@ -8,8 +8,8 @@
       </div>
     </div>
     <div class="video_list" v-for="item in video" :key="item.id">
-      <div class="card me-5">
-        <router-link class="mx-auto my-2" :to="{ path: '/video/' + item.id }"><img :src="getImgUrl(item.path)" /></router-link>
+      <div class="card me-5 flex-row">
+        <router-link class="m-2" :to="{ path: '/video/' + item.id }"><img :src="getImgUrl(item.path)" /></router-link>
         <div class="card-body d-flex justify-content-between">
           <div class="d-flex flex-column">
             <p>{{ item.name }}</p>

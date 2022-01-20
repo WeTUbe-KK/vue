@@ -64,7 +64,7 @@
         <h6>Subscriptions</h6>
       </div>
     </div> -->
-      <div class="container create_acc">
+      <div class="container create_acc mt-5">
           <form method="post" @submit.prevent="register">
             <h1 class="judul">Create WeTube Account</h1>
               <div class="row">

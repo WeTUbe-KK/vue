@@ -169,3 +169,17 @@ exports.search = (req, res) => {
       res.status(400).json({ error: err });
     });
 };
+
+exports.explore = (req, res) => {
+  return Video.findAll({order: [['view','DESC']], include: [{ model: User, as: "User" }] })
+    .then((data) => {
+      const result = data.reduce((acc, curr) => {
+        acc.push(curr.dataValues);
+        return acc;
+      }, []);
+      res.status(200).json({ data: result });
+    })
+    .catch((err) => {
+      res.status(400).json({ error: err });
+    });
+};

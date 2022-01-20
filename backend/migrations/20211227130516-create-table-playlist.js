@@ -27,6 +27,7 @@ module.exports = {
           model: "videos",
           key: "id",
         },
+        onDelete: 'CASCADE'
       },
       category_id: {
         type: Sequelize.INTEGER,

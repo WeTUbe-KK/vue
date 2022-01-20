@@ -33,13 +33,13 @@ const multerUpload = multer({
 });
 
 router.get("", videoController.index);
+router.get("/explore", videoController.explore);
 router.get("/uploaded", videoController.getUploadedVideo);
 router.get("/:id", videoController.getById);
 router.post("/upload", multerUpload.single("video"), videoController.upload);
 router.post("/search", videoController.search);
 router.put("/like/:id", likeVideoController.like);
 router.put("/dislike/:id", likeVideoController.dislike);
-// router.put("/view/:id", videoController.view);
 router.delete("/:id", videoController.remove);
 
 module.exports = router;

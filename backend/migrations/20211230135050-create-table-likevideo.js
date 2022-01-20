@@ -27,6 +27,7 @@ module.exports = {
           model: "videos",
           key: "id",
         },
+        onDelete: "CASCADE",
       },
       status_like: {
         type: Sequelize.BOOLEAN,

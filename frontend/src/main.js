@@ -5,7 +5,6 @@ import App from "./App.vue";
 import Index from "./components/main_no_sign_in.vue";
 import IndexUser from "./components/main_sign_in.vue";
 import Explore from "./components/explore.vue";
-import Subscription from "./components/subscription.vue";
 import Library from "./components/library.vue";
 import History from "./components/history.vue";
 import Your_video from "./components/your_video.vue";
@@ -67,12 +66,6 @@ const routes = [
     name: "explore",
     path: "/explore",
     component: Explore,
-    beforeEnter: ifAuthenticated,
-  },
-  {
-    name: "subscription",
-    path: "/subscription",
-    component: Subscription,
     beforeEnter: ifAuthenticated,
   },
   {

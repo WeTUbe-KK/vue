@@ -24,13 +24,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
       },
-      user_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "users",
-          key: "id",
-        },
-      },
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,

@@ -23,6 +23,7 @@ module.exports = {
       },
       video_id: {
         type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
         references: {
           model: "videos",
           key: "id",

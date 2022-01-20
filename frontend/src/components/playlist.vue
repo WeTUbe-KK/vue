@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div id="overlay">
-      <div id="form_input_video">
+    <!-- <div id="overlay"> -->
+      <!-- <div id="form_input_video">
         <img
           src="../assets/photo/white_mode/close_icon.png"
           v-on:click="off()"
@@ -20,8 +20,8 @@
         <textarea id="w3review" name="w3review" rows="5" cols="80"></textarea>
         <h3>thumbnail</h3>
         <input type="file" id="myFile" name="filename" />
-      </div>
-    </div>
+      </div> -->
+    <!-- </div> -->
 
     <!-- <nav class="flex">
       <div class="navbar_left flex">
@@ -155,7 +155,7 @@
               ></div>
             </div>
             <p class="text-center text-light mb-0">{{ item.name }}</p>
-            <div class="listPhoto">
+            <div>
               <img class="mx-auto w-100 h-100" :src="getImgUrl(item)" />
             </div>
             <div class="icon">
@@ -198,8 +198,8 @@
                 "
               ></div>
             </div>
-            <p class="text-center text-light mb-0">Uploaded video</p>
-            <div class="listPhoto">
+            <p class="text-center text-light mb-0">Uploaded Video</p>
+            <div>
               <img
                 class="mx-auto w-100 h-100"
                 :src="getUploadedImg(uploadedVideo)"
@@ -226,7 +226,7 @@
           </div>
         </div>
       </div>
-      <div class="lists lists-videos py-5">
+      <div class="lists lists-videos py-5 mt-5">
         <div
           class="videos"
           style="display: flex; align-items: center; margin-bottom: 5%"
@@ -238,15 +238,18 @@
             <router-link v-if="item.Video" class="mx-auto my-2" :to="{ path: '/video/' + item.Video.id }"><img class="mx-auto w-100 h-100" :src="getPlayListUrl(item)" /></router-link>
             <router-link v-else class="mx-auto my-2" :to="{ path: '/video/' + item.id }"><img class="mx-auto w-100 h-100" :src="getPlayListUrl(item)" /></router-link>
           </div>
-          <div v-if="item.Video" class="d-flex ms-2 flex-column">
+          <div v-if="item.Video" class="d-flex ms-2 flex-column align-items-center">
             <p>{{ item.Video.name }}</p>
             <p>{{ item.Video.User.username }}</p>
             <small>{{ item.Video.description }}</small>
           </div>
-          <div v-else class="d-flex ms-2 flex-column">
-            <p>{{ item.name }}</p>
-            <p>{{ item.User.username }}</p>
-            <small>{{ item.description }}</small>
+          <div v-else class="d-flex ms-2 justify-content-between w-50">
+            <div>
+              <p>{{ item.name }}</p>
+              <p>{{ item.User.username }}</p>
+              <small>{{ item.description }}</small>
+            </div>
+            <button class="btn btn-danger" style="height: fit-content"  v-on:click="deleteVideo(item.id)">Remove</button>
           </div>
           <h5 style="margin: 0 1.5%"></h5>
         </div>
@@ -276,6 +279,14 @@ export default {
   created() {
     this.getVideo();
   },
+  watch:{
+    video: {
+      handler : function () {
+        console.log('success')
+      },
+      deep: true
+    }
+  },
   methods: {
     async getVideo() {
       try {
@@ -296,9 +307,7 @@ export default {
           }
         );
         this.video = response.data.data;
-        console.log(this.video)
         this.uploaded = response1.data.data;
-        // console.log(response1.data.data);
         if (this.uploaded.length > 0) {
           this.uploadedVideo = this.uploaded[0];
         }
@@ -325,6 +334,22 @@ export default {
         const image = pic.path.split("/");
         image.splice(6, 0, "w_200,h_200,c_scale");
         return image.join("/").slice(0, -4) + ".jpg";
+      }
+    },
+    async deleteVideo(id){
+      try {
+        await axios.delete(
+          `${process.env.VUE_APP_BACKEND}/video/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          }
+        );
+        this.getVideo()
+        this.$vToastify.success("Deleted Video"); 
+      } catch (err) {
+        console.log(err);
       }
     },
     signOut() {

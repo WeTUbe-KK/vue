@@ -30,9 +30,7 @@
             <!-- profile user -->
             <div>
               <p>{{ video.User.username }}</p>
-              <span>jumlah subscribes</span>
             </div>
-            <button v-if="authenticate" type="button">Subscribe</button>
           </div>
           <div class="description">
             <p>{{ video.description }}</p>

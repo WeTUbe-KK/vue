@@ -20,7 +20,7 @@ const Comment = db.sequelize.define("comment", {
 });
 
 // Like Comment
-Comment.hasMany(likeComment, { as: "likeComment", foreignKey: "comment_id" });
-likeComment.belongsTo(Comment, { as: "Comment", foreignKey: "comment_id" });
+Comment.hasMany(likeComment, { as: "likeComment", foreignKey: "comment_id", onDelete: "CASCADE", hooks: true });
+likeComment.belongsTo(Comment, { as: "Comment", foreignKey: "comment_id", onDelete: "CASCADE", hooks: true });
 
 module.exports = Comment;

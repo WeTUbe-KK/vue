@@ -27,6 +27,7 @@ module.exports = {
           model: "videos",
           key: "id",
         },
+        onDelete: "CASCADE",
       },
       createdAt: {
         type: Sequelize.DATE,

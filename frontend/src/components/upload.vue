@@ -64,7 +64,7 @@
         <h6>Subscriptions</h6>
       </div>
     </div> -->
-      <div>
+      <div style="margin-top:12%">
         <div class="container upload mt-5">
           <h1>Upload Video</h1>
             <form method="post" @submit.prevent="upload" enctype="multipart/form-data">
@@ -127,6 +127,7 @@ export default {
         this.description = "";
         this.loading = false;
         this.disabled = false;
+        this.$vToastify.success("Uploaded new Video");
         this.$router.push("/home");
       } catch (err) {
         this.loading = false;
