@@ -25,33 +25,96 @@ const Video = db.sequelize.define("video", {
   path: {
     type: Sequelize.STRING,
   },
+  thumbnail: {
+    type: Sequelize.STRING,
+  },
   view: {
     type: Sequelize.INTEGER,
   },
 });
 
 // Comment
-Video.hasMany(Comment, { as: "Comment", foreignKey: "video_id", onDelete: "CASCADE", hooks: true });
-Comment.belongsTo(Video, { as: "Video", foreignKey: "video_id", onDelete: "CASCADE", hooks: true });
+Video.hasMany(Comment, {
+  as: "Comment",
+  foreignKey: "video_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
+Comment.belongsTo(Video, {
+  as: "Video",
+  foreignKey: "video_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
 
 // History
-Video.hasMany(History, { as: "History", foreignKey: "video_id", onDelete: "CASCADE", hooks: true });
-History.belongsTo(Video, { as: "Video", foreignKey: "video_id", onDelete: "CASCADE", hooks: true });
+Video.hasMany(History, {
+  as: "History",
+  foreignKey: "video_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
+History.belongsTo(Video, {
+  as: "Video",
+  foreignKey: "video_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
 
 // Playlist
-Video.hasMany(playList, { as: "playList", foreignKey: "video_id", onDelete: "CASCADE", hooks: true });
-playList.belongsTo(Video, { as: "Video", foreignKey: "video_id", onDelete: "CASCADE", hooks: true });
+Video.hasMany(playList, {
+  as: "playList",
+  foreignKey: "video_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
+playList.belongsTo(Video, {
+  as: "Video",
+  foreignKey: "video_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
 
 // Watch Later
-Video.hasMany(watchLater, { as: "watchLater", foreignKey: "video_id", onDelete: "CASCADE", hooks: true });
-watchLater.belongsTo(Video, { as: "Video", foreignKey: "video_id", onDelete: "CASCADE", hooks: true });
+Video.hasMany(watchLater, {
+  as: "watchLater",
+  foreignKey: "video_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
+watchLater.belongsTo(Video, {
+  as: "Video",
+  foreignKey: "video_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
 
 // Like Comment
-Video.hasOne(likeComment, { as: "likeComment", foreignKey: "video_id", onDelete: "CASCADE", hooks: true });
-likeComment.belongsTo(Video, { as: "Video", foreignKey: "video_id", onDelete: "CASCADE", hooks: true });
+Video.hasOne(likeComment, {
+  as: "likeComment",
+  foreignKey: "video_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
+likeComment.belongsTo(Video, {
+  as: "Video",
+  foreignKey: "video_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
 
 // Like Video
-Video.hasMany(likeVideo, { as: "likeVideo", foreignKey: "video_id", onDelete: "CASCADE", hooks: true });
-likeVideo.belongsTo(Video, { as: "Video", foreignKey: "video_id", onDelete: "CASCADE", hooks: true });
+Video.hasMany(likeVideo, {
+  as: "likeVideo",
+  foreignKey: "video_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
+likeVideo.belongsTo(Video, {
+  as: "Video",
+  foreignKey: "video_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
 
 module.exports = Video;

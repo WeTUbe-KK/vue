@@ -60,20 +60,66 @@
 
 tempat taruh video------- -->
     <div class="menuAdd flex-column bg-dark min-vh-100 mt-5">
-        <div class="mx-auto mt-3 title"><p style="font-family: 'The Nautigal', cursive; font-weight: bold; background: linear-gradient(to right, purple, red, yellow);  -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Your Watch Later List</p></div>
-        <hr class="hrWatchLater mx-auto p-0" style="height: 2px; background: linear-gradient(to right, yellow, white, lightblue, aqua, purple); opacity: 1;">        
-        <div style="display: grid;" class="mx-5 gridWH"> 
-          <div v-for="(item) in video" :key="item.id" class="wrapper text-light my-3" style="display: flex;">
-            <div class="widthVideo"><router-link :to="{ path: '/video/' + item.Video.id }"><img class="mx-auto w-100" style="height: 170px;" :src="getImgUrl(item)" /></router-link></div>
-            <div class="videoInfo mx-2">
-              <p style="font-size: 20px; color: orange;">{{ item.Video.name }}</p>
-              <p>{{ item.Video.User.username }}</p>
-              <small>{{ item.Video.description }}</small>
-            </div>
-          </div>     
+      <div class="mx-auto mt-3 title">
+        <p
+          style="
+            font-family: 'The Nautigal', cursive;
+            font-weight: bold;
+            background: linear-gradient(to right, purple, red, yellow);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          "
+        >
+          Your Watch Later List
+        </p>
+      </div>
+      <hr
+        class="hrWatchLater mx-auto p-0"
+        style="
+          height: 2px;
+          background: linear-gradient(
+            to right,
+            yellow,
+            white,
+            lightblue,
+            aqua,
+            purple
+          );
+          opacity: 1;
+        "
+      />
+      <div style="display: grid" class="mx-5 gridWH">
+        <div
+          v-for="item in video"
+          :key="item.id"
+          class="wrapper text-light my-3"
+          style="display: flex"
+        >
+          <div class="widthVideo">
+            <router-link :to="{ path: '/video/' + item.Video.id }">
+              <img
+                class="mx-auto w-100"
+                style="height: 170px"
+                v-if="item.thumbnail"
+                :src="getImgUrl(item.thumbnail)"
+              />
+              <img
+                class="mx-auto w-100"
+                style="height: 170px"
+                v-else
+                :src="getImgUrl(item.path)"
+              />
+            </router-link>
+          </div>
+          <div class="videoInfo mx-2">
+            <p style="font-size: 20px; color: orange">{{ item.Video.name }}</p>
+            <p>{{ item.Video.User.username }}</p>
+            <small>{{ item.Video.description }}</small>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
 <script>
 import axios from "axios";

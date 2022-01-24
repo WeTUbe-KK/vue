@@ -30,6 +30,9 @@ module.exports = {
       path: {
         type: Sequelize.STRING,
       },
+      thumbnail: {
+        type: Sequelize.STRING,
+      },
       view: {
         type: Sequelize.INTEGER,
         unsigned: true,

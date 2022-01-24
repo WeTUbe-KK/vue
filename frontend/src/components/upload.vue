@@ -1,7 +1,7 @@
 <template>
-<div>
-  <navbar></navbar>
-  <!-- <nav class="flex">
+  <div>
+    <navbar></navbar>
+    <!-- <nav class="flex">
       <div class="navbar_left flex">
         <img src="../assets/photo/dark_mode/menu_icon.png" alt="menu_icon" class="menu_icon" />
         <h3>WeTube</h3>
@@ -64,52 +64,89 @@
         <h6>Subscriptions</h6>
       </div>
     </div> -->
-      <div style="margin-top:12%">
-        <div class="container upload mt-5">
-          <h1>Upload Video</h1>
-            <form method="post" @submit.prevent="upload" enctype="multipart/form-data">
-            <div class="drag-area">
-              <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                <header>Drag & Drop to Upload File</header>
-                <span>OR</span>
-                <input class="ms-5" type="file" @change="uploadFile" ref="file" :disabled="disabled">
-              </div>
-
-              <h3 class="h3_upload">Title</h3>
-              <textarea class="textarea_upload" v-model="title" :disabled="disabled"></textarea>
-              <h3>Description</h3>
-              <textarea class="textarea_upload" v-model="description" :disabled="disabled"></textarea>
-              <div class="spinner-border d-block my-2" role="status" v-if="loading">
-                <span class="sr-only"></span>
-              </div>
-              <button type="submit" class="btn btn-primary tombol_upload" :disabled="disabled">Upload</button>
-            </form>
-            </div>
-        </div>
+    <div style="margin-top: 12%">
+      <div class="container upload mt-5">
+        <h1>Upload Video</h1>
+        <form
+          method="post"
+          @submit.prevent="upload"
+          enctype="multipart/form-data"
+        >
+          <div class="drag-area">
+            <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <header>Drag & Drop to Upload File</header>
+            <span>OR</span>
+            <input
+              class="ms-5"
+              type="file"
+              @change="uploadFile"
+              accept="video/*"
+              ref="file"
+              :disabled="disabled"
+            />
+          </div>
+          <h3 class="h3_upload">Thumbnail</h3>
+          <input
+            class="ms-5"
+            type="file"
+            @change="uploadPhoto"
+            accept="image/*"
+            ref="photo"
+            :disabled="disabled"
+          />
+          <h3 class="h3_upload">Title</h3>
+          <textarea
+            class="textarea_upload"
+            v-model="title"
+            :disabled="disabled"
+          ></textarea>
+          <h3>Description</h3>
+          <textarea
+            class="textarea_upload"
+            v-model="description"
+            :disabled="disabled"
+          ></textarea>
+          <div class="spinner-border d-block my-2" role="status" v-if="loading">
+            <span class="sr-only"></span>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary tombol_upload"
+            :disabled="disabled"
+          >
+            Upload
+          </button>
+        </form>
       </div>
+    </div>
+  </div>
 </template>
 <script>
 import axios from "axios";
 import sidebar from "./sidebar.vue";
 import navbar from "./navbar.vue";
 export default {
-  components: {sidebar,navbar},
-  data(){
+  components: { sidebar, navbar },
+  data() {
     return {
       video: [],
       title: "",
       description: "",
-      formData: "",
       Video: "",
+      Photo: "",
       loading: false,
       disabled: false,
-    }
+      formData: new FormData(),
+    };
   },
   methods: {
     uploadFile() {
       this.Video = this.$refs.file.files[0];
-      this.formData = new FormData();
       this.formData.append("video", this.Video);
+    },
+    uploadPhoto() {
+      this.Photo = this.$refs.photo.files[0];
+      this.formData.append("image", this.Photo);
     },
     async upload() {
       try {
@@ -117,12 +154,16 @@ export default {
         this.formData.append("description", this.description);
         this.loading = true;
         this.disabled = true;
-        await axios.post(`${process.env.VUE_APP_BACKEND}/video/upload`, this.formData, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("user-token")}`,
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        await axios.post(
+          `${process.env.VUE_APP_BACKEND}/video/upload`,
+          this.formData,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
         this.title = "";
         this.description = "";
         this.loading = false;
@@ -134,7 +175,7 @@ export default {
         this.disabled = false;
         console.log(err);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>

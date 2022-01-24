@@ -17,26 +17,24 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "Asset",
-    format: "mp4",
-    resource_type: "video",
+    resource_type: "auto",
   },
 });
 
-const multerUpload = multer({
-  storage,
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(mp4)$/)) {
-      return cb(new Error("Please upload a video"));
-    }
-    cb(undefined, true);
-  },
-});
+const multerUpload = multer({ storage });
 
 router.get("", videoController.index);
 router.get("/explore", videoController.explore);
 router.get("/uploaded", videoController.getUploadedVideo);
 router.get("/:id", videoController.getById);
-router.post("/upload", multerUpload.single("video"), videoController.upload);
+router.post(
+  "/upload",
+  multerUpload.fields([
+    { name: "video", maxCount: 1 },
+    { name: "image", maxCount: 1 },
+  ]),
+  videoController.upload
+);
 router.post("/search", videoController.search);
 router.put("/like/:id", likeVideoController.like);
 router.put("/dislike/:id", likeVideoController.dislike);

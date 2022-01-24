@@ -5,20 +5,22 @@ const likeComment = require("../Model/likeComment");
 const Comment = require("../Model/comment");
 const likeVideo = require("../Model/likeVideo");
 const User = require("../Model/user");
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 exports.upload = (req, res) => {
   const { user_id } = isAuth((context = { req }));
-  const file = req.file;
-  if (!file) {
+  const video = req.files.video[0];
+  const image = req.files.image[0];
+  if (!video || !image) {
     res.status(400).json({ error: "File kosong" });
   }
   const videoData = {
     user_id,
     name: req.body.name,
     description: req.body.description,
-    path: file.path,
+    path: video.path,
+    thumbnail: image.path,
   };
   Video.create(videoData)
     .then((data) => {
@@ -71,7 +73,7 @@ exports.findOne = (id) => {
 exports.view = async (id) => {
   Video.increment({ view: +1 }, { where: { id } })
     .then(async () => {
-      return ({ data: "success" });
+      return { data: "success" };
     })
     .catch((err) => {
       return { error: err };
@@ -100,7 +102,10 @@ exports.getById = (req, res) => {
       {
         model: Comment,
         as: "Comment",
-        include: [{ model: likeComment, as: "likeComment" }, { model: User, as: "User" }],
+        include: [
+          { model: likeComment, as: "likeComment" },
+          { model: User, as: "User" },
+        ],
       },
       { model: likeVideo, as: "likeVideo" },
       { model: User, as: "User" },
@@ -127,8 +132,8 @@ exports.getById = (req, res) => {
         curr.dataValues.likeComment = likeComment.countLikeComment || 0;
         curr.dataValues.dislikeComment = likeComment.countDislikeComment || 0;
         acc.push(curr.dataValues);
-        countLikeComment = 0
-        countDislikeComment = 0
+        countLikeComment = 0;
+        countDislikeComment = 0;
         return acc;
       }, []);
       const likeVideoCount = likeVideo.reduce((acc, curr) => {
@@ -161,7 +166,10 @@ exports.getUploadedVideo = (req, res) => {
 };
 
 exports.search = (req, res) => {
-  Video.findAll({ where: { name: {[Op.like] : `%${req.body.name}%`} }, include: [{ model: User, as: "User" }] })
+  Video.findAll({
+    where: { name: { [Op.like]: `%${req.body.name}%` } },
+    include: [{ model: User, as: "User" }],
+  })
     .then((data) => {
       res.status(200).json({ data });
     })
@@ -171,7 +179,10 @@ exports.search = (req, res) => {
 };
 
 exports.explore = (req, res) => {
-  return Video.findAll({order: [['view','DESC']], include: [{ model: User, as: "User" }] })
+  return Video.findAll({
+    order: [["view", "DESC"]],
+    include: [{ model: User, as: "User" }],
+  })
     .then((data) => {
       const result = data.reduce((acc, curr) => {
         acc.push(curr.dataValues);

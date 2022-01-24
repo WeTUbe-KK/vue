@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <div id="overlay"> -->
-      <!-- <div id="form_input_video">
+    <!-- <div id="form_input_video">
         <img
           src="../assets/photo/white_mode/close_icon.png"
           v-on:click="off()"
@@ -235,10 +235,23 @@
         >
           <h4 style="margin: 0 1.5%">{{ index + 1 }}</h4>
           <div class="video">
-            <router-link v-if="item.Video" class="mx-auto my-2" :to="{ path: '/video/' + item.Video.id }"><img class="mx-auto w-100 h-100" :src="getPlayListUrl(item)" /></router-link>
-            <router-link v-else class="mx-auto my-2" :to="{ path: '/video/' + item.id }"><img class="mx-auto w-100 h-100" :src="getPlayListUrl(item)" /></router-link>
+            <router-link
+              v-if="item.Video"
+              class="mx-auto my-2"
+              :to="{ path: '/video/' + item.Video.id }"
+              ><img class="mx-auto w-100 h-100" :src="getPlayListUrl(item)"
+            /></router-link>
+            <router-link
+              v-else
+              class="mx-auto my-2"
+              :to="{ path: '/video/' + item.id }"
+              ><img class="mx-auto w-100 h-100" :src="getPlayListUrl(item)"
+            /></router-link>
           </div>
-          <div v-if="item.Video" class="d-flex ms-2 flex-column align-items-center">
+          <div
+            v-if="item.Video"
+            class="d-flex ms-2 flex-column align-items-center"
+          >
             <p>{{ item.Video.name }}</p>
             <p>{{ item.Video.User.username }}</p>
             <small>{{ item.Video.description }}</small>
@@ -249,7 +262,13 @@
               <p>{{ item.User.username }}</p>
               <small>{{ item.description }}</small>
             </div>
-            <button class="btn btn-danger" style="height: fit-content"  v-on:click="deleteVideo(item.id)">Remove</button>
+            <button
+              class="btn btn-danger"
+              style="height: fit-content"
+              v-on:click="deleteVideo(item.id)"
+            >
+              Remove
+            </button>
           </div>
           <h5 style="margin: 0 1.5%"></h5>
         </div>
@@ -279,13 +298,13 @@ export default {
   created() {
     this.getVideo();
   },
-  watch:{
+  watch: {
     video: {
-      handler : function () {
-        console.log('success')
+      handler: function () {
+        console.log("success");
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     async getVideo() {
@@ -322,7 +341,12 @@ export default {
       if (pic.playList.length == 0) {
         return "https://picsum.photos/200/200?random=1";
       } else {
-        const image = pic.playList[0].Video.path.split("/");
+        if (!pic.playList[0].Video.thumbnail) {
+          const image = pic.playList[0].Video.path.split("/");
+          image.splice(6, 0, "w_200,h_200,c_scale");
+          return image.join("/").slice(0, -4) + ".jpg";
+        }
+        const image = pic.playList[0].Video.thumbnail.split("/");
         image.splice(6, 0, "w_200,h_200,c_scale");
         return image.join("/").slice(0, -4) + ".jpg";
       }
@@ -331,23 +355,25 @@ export default {
       if (pic.length == 0) {
         return "https://picsum.photos/200/200?random=1";
       } else {
-        const image = pic.path.split("/");
+        if (!pic.thumbnail) {
+          const image = pic.path.split("/");
+          image.splice(6, 0, "w_200,h_200,c_scale");
+          return image.join("/").slice(0, -4) + ".jpg";
+        }
+        const image = pic.thumbnail.split("/");
         image.splice(6, 0, "w_200,h_200,c_scale");
         return image.join("/").slice(0, -4) + ".jpg";
       }
     },
-    async deleteVideo(id){
+    async deleteVideo(id) {
       try {
-        await axios.delete(
-          `${process.env.VUE_APP_BACKEND}/video/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
-            },
-          }
-        );
-        this.getVideo()
-        this.$vToastify.success("Deleted Video"); 
+        await axios.delete(`${process.env.VUE_APP_BACKEND}/video/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+          },
+        });
+        this.getVideo();
+        this.$vToastify.success("Deleted Video");
       } catch (err) {
         console.log(err);
       }
@@ -387,11 +413,21 @@ export default {
     },
     getPlayListUrl(item) {
       if (item.path) {
-        const image = item.path.split("/");
+        if (!item.thumbnail) {
+          const image = item.path.split("/");
+          image.splice(6, 0, "w_200,h_200,c_scale");
+          return image.join("/").slice(0, -4) + ".jpg";
+        }
+        const image = item.thumbnail.split("/");
         image.splice(6, 0, "w_200,h_200,c_scale");
         return image.join("/").slice(0, -4) + ".jpg";
       } else {
-        const image = item.Video.path.split("/");
+        if (!item.Video.thumbnail) {
+          const image = item.Video.path.split("/");
+          image.splice(6, 0, "w_200,h_200,c_scale");
+          return image.join("/").slice(0, -4) + ".jpg";
+        }
+        const image = item.Video.thumbnail.split("/");
         image.splice(6, 0, "w_200,h_200,c_scale");
         return image.join("/").slice(0, -4) + ".jpg";
       }
