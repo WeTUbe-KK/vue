@@ -32,6 +32,10 @@ module.exports = {
       description: {
         type: Sequelize.STRING,
       },
+      reply: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
       createdAt: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,

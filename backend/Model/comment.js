@@ -18,6 +18,9 @@ const Comment = db.sequelize.define("comment", {
   video_id: {
     type: Sequelize.INTEGER,
   },
+  reply: {
+    type: Sequelize.BOOLEAN,
+  },
 });
 
 // Like Comment

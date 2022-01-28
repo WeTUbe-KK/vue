@@ -102,6 +102,7 @@ exports.getById = (req, res) => {
       {
         model: Comment,
         as: "Comment",
+        where: { reply: null },
         include: [
           { model: likeComment, as: "likeComment" },
           { model: User, as: "User" },

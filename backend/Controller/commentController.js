@@ -18,11 +18,6 @@ exports.register = (req, res) => {
         video_id,
         comment_id: comment.dataValues.id,
       };
-      Reply.create(replyData)
-        .then((reply) => console.log(reply))
-        .catch((err) => {
-          res.send("error : " + err);
-        });
       res.status(200).json(comment);
     })
     .catch((err) => {
@@ -39,6 +34,7 @@ exports.reply = (req, res) => {
     user_id,
     video_id,
     description: req.body.description,
+    reply: true
   };
   Comment.create(commentData)
     .then((comment) => {
@@ -48,7 +44,7 @@ exports.reply = (req, res) => {
         response_id: comment.dataValues.id,
       };
       Reply.create(replyData)
-        .then((reply) => console.log(reply))
+        .then((reply) => { })
         .catch((err) => {
           res.send("error : " + err);
         });
@@ -83,31 +79,50 @@ exports.getById = (req, res) => {
     ],
   })
     .then(async (data) => {
-      //const { Comment, Response, ...videoData } = data.dataValues;
-      console.log(data);
-      //let countLikeComment = 0;
-      //let countDislikeComment = 0;
-      //const result = Comment.reduce((acc, curr) => {
-      //const likeComment = curr.dataValues.likeComment.reduce(
-      //(acc1, curr1) => {
-      //if (curr1.dataValues.status_like) {
-      //countLikeComment = countLikeComment + 1;
-      //} else {
-      //countDislikeComment = countDislikeComment + 1;
-      //}
-      //return { countLikeComment, countDislikeComment };
-      //},
-      //[]
-      //);
-      //curr.dataValues.likeComment = likeComment.countLikeComment || 0;
-      //curr.dataValues.dislikeComment = likeComment.countDislikeComment || 0;
-      //acc.push(curr.dataValues);
-      //countLikeComment = 0;
-      //countDislikeComment = 0;
-      //return acc;
-      //}, []);
-      //videoData.comment = result;
-      res.status(200).json({ data: videoData });
+      if (data.length > 0) {
+        const { Comment, Response, comment_id, response_id, ...videoData } = data[0].dataValues;
+        let countLikeResponse = 0;
+        let countDislikeResponse = 0;
+        let countLikeComment = 0;
+        let countDislikeComment = 0;
+        const result = data.reduce((acc, curr) => {
+          const likeComment = curr.Response.dataValues.likeComment.reduce(
+            (acc1, curr1) => {
+              if (curr1.dataValues.status_like) {
+                countLikeResponse = countLikeResponse + 1;
+              } else {
+                countDislikeResponse = countDislikeResponse + 1;
+              }
+              return { countLikeResponse, countDislikeResponse };
+            },
+            []
+          );
+          curr.Response.dataValues.likeComment = likeComment.countLikeComment || 0;
+          curr.Response.dataValues.dislikeComment = likeComment.countDislikeComment || 0;
+          acc.push(curr.Response.dataValues);
+          countLikeComment = 0;
+          countDislikeComment = 0;
+          return acc;
+        }, []);
+        const likeComment = Comment.dataValues.likeComment.reduce(
+          (acc1, curr1) => {
+            if (curr1.dataValues.status_like) {
+              countLikeComment = countLikeComment + 1;
+            } else {
+              countDislikeComment = countDislikeComment + 1;
+            }
+            return { countLikeComment, countDislikeComment };
+          },
+          []
+        );
+        Comment.dataValues.likeComment = likeComment.countLikeComment || 0;
+        Comment.dataValues.dislikeComment = likeComment.countDislikeComment || 0;
+        videoData.Comment = Comment
+        videoData.Response = result
+        res.status(200).json({ data: videoData });
+      } else {
+        res.status(200).json({ data: {} });
+      }
     })
     .catch((err) => {
       console.log(err);

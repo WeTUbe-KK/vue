@@ -41,7 +41,7 @@
               <input type="text" v-model="description" placeholder="Comments..." />
             </form>
 
-            <div class="other_comment" v-for="items in video.comment" :key="items.id">
+            <div class="other_comment" v-for="(items,index) in video.comment" :key="items.id">
               <!-- gambar user lain -->
               <div>
                 <h3>{{ items.User.username}}<span>{{ getDate(items.createdAt) }}</span></h3>
@@ -51,8 +51,25 @@
                   <p class="d-flex align-items-center p-0 m-0">{{ items.likeComment }}</p>
                   <button class="btn p-0"><img class="ms-2 mt-2" src="../assets/photo/white_mode/dislike_icon.png" alt="dislike" v-on:click="dislikeComment(items.id)"/></button>
                   <p class="d-flex align-items-center p-0 m-0">{{ items.dislikeComment }}</p>
-                  <!-- <span>replay</span>
-                  <a href="">all replies</a> -->
+                  <button class="btn p-0" title="All Replies"><img class="w-50 ms-2 mt-2" src="../assets/photo/white_mode/reply.png" alt="reply" v-on:click="getReply(items.id)"/></button>
+                  <form v-if="authenticate" method="post" @submit.prevent="replyComment(items.id,index)" class="add_comment my-0">
+                    <input type="text" v-model="reply[index]" placeholder="Reply..." class="pt-0"/>
+                  </form>
+                  </div>
+                  <div class="ms-5">
+                    <h3>{{ items.User.username}}<span>{{ getDate(items.createdAt) }}</span></h3>
+                    <p>{{ items.description }}</p>
+                    <div v-if="authenticate" class="comment_action">
+                      <button class="btn p-0"><img style="width:21.5px" src="../assets/photo/white_mode/like_icon.png" alt="dislike" v-on:click="likeComment(items.id)"/></button>
+                      <p class="d-flex align-items-center p-0 m-0">{{ items.likeComment }}</p>
+                      <button class="btn p-0"><img class="ms-2 mt-2" src="../assets/photo/white_mode/dislike_icon.png" alt="dislike" v-on:click="dislikeComment(items.id)"/></button>
+                      <p class="d-flex align-items-center p-0 m-0">{{ items.dislikeComment }}</p>
+                      <button class="btn p-0" title="All Replies"><img class="w-50 ms-2 mt-2" src="../assets/photo/white_mode/reply.png" alt="reply" v-on:click="getReply(items.id)"/></button>
+                      <form v-if="authenticate" method="post" @submit.prevent="replyComment(items.id,index)" class="add_comment my-0">
+                        <input type="text" v-model="reply[index]" placeholder="Reply..." class="pt-0"/>
+                      </form>
+                      
+                    </div>
                 </div>
               </div>
             </div>
@@ -82,6 +99,7 @@ export default {
       id: this.$route.params.id,
       playListData: [],
       description : "",
+      reply: [],
       authenticate : localStorage.getItem('user-token') || null
     };
   },
@@ -203,6 +221,24 @@ export default {
         );
         this.getVideo()
       } catch (err) {
+        console.log(err);
+      }
+    },
+    async replyComment(comment_id,index){
+       try {
+         await axios.post(
+           `${process.env.VUE_APP_BACKEND}/comment/reply/${this.id}`,
+          { comment_id, description: this.reply[index] },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+            },
+          }
+        );
+        this.reply.pop()
+        this.getVideo()
+      } catch (err) {
+        this.reply.pop()
         console.log(err);
       }
     },
