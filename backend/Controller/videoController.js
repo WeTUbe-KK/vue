@@ -103,6 +103,7 @@ exports.getById = (req, res) => {
         model: Comment,
         as: "Comment",
         where: { reply: null },
+        required: false,
         include: [
           { model: likeComment, as: "likeComment" },
           { model: User, as: "User" },
@@ -151,6 +152,7 @@ exports.getById = (req, res) => {
       res.status(200).json({ data: videoData });
     })
     .catch((err) => {
+      console.log(err)
       res.status(400).json({ error: err });
     });
 };

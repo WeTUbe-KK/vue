@@ -51,26 +51,11 @@
                   <p class="d-flex align-items-center p-0 m-0">{{ items.likeComment }}</p>
                   <button class="btn p-0"><img class="ms-2 mt-2" src="../assets/photo/white_mode/dislike_icon.png" alt="dislike" v-on:click="dislikeComment(items.id)"/></button>
                   <p class="d-flex align-items-center p-0 m-0">{{ items.dislikeComment }}</p>
-                  <button class="btn p-0" title="All Replies"><img class="w-50 ms-2 mt-2" src="../assets/photo/white_mode/reply.png" alt="reply" v-on:click="getReply(items.id)"/></button>
+                  <button class="btn p-0" title="All Replies" v-b-modal.showModal><img class="w-50 ms-2 mt-2" src="../assets/photo/white_mode/reply.png" alt="reply" v-on:click="getReply(items.id)"/></button>
                   <form v-if="authenticate" method="post" @submit.prevent="replyComment(items.id,index)" class="add_comment my-0">
                     <input type="text" v-model="reply[index]" placeholder="Reply..." class="pt-0"/>
                   </form>
                   </div>
-                  <div class="ms-5">
-                    <h3>{{ items.User.username}}<span>{{ getDate(items.createdAt) }}</span></h3>
-                    <p>{{ items.description }}</p>
-                    <div v-if="authenticate" class="comment_action">
-                      <button class="btn p-0"><img style="width:21.5px" src="../assets/photo/white_mode/like_icon.png" alt="dislike" v-on:click="likeComment(items.id)"/></button>
-                      <p class="d-flex align-items-center p-0 m-0">{{ items.likeComment }}</p>
-                      <button class="btn p-0"><img class="ms-2 mt-2" src="../assets/photo/white_mode/dislike_icon.png" alt="dislike" v-on:click="dislikeComment(items.id)"/></button>
-                      <p class="d-flex align-items-center p-0 m-0">{{ items.dislikeComment }}</p>
-                      <button class="btn p-0" title="All Replies"><img class="w-50 ms-2 mt-2" src="../assets/photo/white_mode/reply.png" alt="reply" v-on:click="getReply(items.id)"/></button>
-                      <form v-if="authenticate" method="post" @submit.prevent="replyComment(items.id,index)" class="add_comment my-0">
-                        <input type="text" v-model="reply[index]" placeholder="Reply..." class="pt-0"/>
-                      </form>
-                      
-                    </div>
-                </div>
               </div>
             </div>
           </div>
@@ -82,6 +67,27 @@
         </div>
       </div>
     </div>
+    <b-modal id="showModal" v-bind:title="commentData" :hide-header-close="true">
+      <div v-if="replyData.length == 0">
+        <p>---</p>
+      </div>
+      <div v-else>
+        <div class="other_comment flex-column align-items-start" v-for="(items,index) in replyData" :key="items.id">
+            <h3>{{ items.User.username}}<span>{{ getDate(items.createdAt) }}</span></h3>
+            <p>{{ items.description }}</p>
+            <div v-if="authenticate" class="comment_action">
+              <button class="btn p-0"><img style="width:21.5px" src="../assets/photo/white_mode/like_icon.png" alt="dislike" v-on:click="likeComment(items.id)"/></button>
+              <p class="d-flex align-items-center p-0 m-0">{{ items.likeComment }}</p>
+              <button class="btn p-0"><img class="ms-2 mt-2" src="../assets/photo/white_mode/dislike_icon.png" alt="dislike" v-on:click="dislikeComment(items.id)"/></button>
+              <p class="d-flex align-items-center p-0 m-0">{{ items.dislikeComment }}</p>
+              <button class="btn p-0" title="All Replies" v-b-modal.showModal><img class="w-50 ms-2 mt-2" src="../assets/photo/white_mode/reply.png" alt="reply" v-on:click="getReply(items.id)"/></button>
+              <form v-if="authenticate" method="post" @submit.prevent="replyComment(items.id,index)" class="add_comment my-0">
+                <input type="text" v-model="reply1[index]" placeholder="Reply..." class="pt-0"/>
+              </form>
+            </div>
+        </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -100,7 +106,10 @@ export default {
       playListData: [],
       description : "",
       reply: [],
-      authenticate : localStorage.getItem('user-token') || null
+      reply1: [],
+      authenticate : localStorage.getItem('user-token') || null,
+      replyData : [],
+      commentData : ""
     };
   },
   created: function() {
@@ -134,6 +143,20 @@ export default {
             },
           });
           this.playListData = response1.data.data.playListCategory
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getReply(comment_id) {
+      try {
+        const response = await axios.get(`${process.env.VUE_APP_BACKEND}/comment/${comment_id}`);
+        if(response.data.data.Response){
+          this.commentData = 'Comment : ' + response.data.data.Comment.description
+          this.replyData = response.data.data.Response
+        } else {
+          this.commentData = 'No Replies'
+          this.replyData = []
         }
       } catch (err) {
         console.log(err);
@@ -225,10 +248,11 @@ export default {
       }
     },
     async replyComment(comment_id,index){
+      const description = this.reply[index] || this.reply1[index]
        try {
          await axios.post(
            `${process.env.VUE_APP_BACKEND}/comment/reply/${this.id}`,
-          { comment_id, description: this.reply[index] },
+          { comment_id, description },
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("user-token")}`,
@@ -236,6 +260,7 @@ export default {
           }
         );
         this.reply.pop()
+        this.reply1.pop()
         this.getVideo()
       } catch (err) {
         this.reply.pop()
